@@ -1,0 +1,14 @@
+Annie Gesellchen
+CSE 403
+January 27th, 2019
+Individual Status Report 
+
+Section 1:
+	[First Week]
+Section 2:
+•	This week, I helped write our team’s project proposal. 
+•	I created our team’s GitHub.
+Section 3:
+•	In the coming week, I plan to help our team create the project spec as well as design the architecture and implementation plan for our project. It’s important that we start out with a solid plan in order to ensure our project is completed on time. 
+•	I will download and familiarize myself with Maya, the platform that we are creating a plugin for. I need to get up to speed with how its scripting platform works so that I am comfortable when we begin implementation.
+
