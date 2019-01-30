@@ -1,0 +1,17 @@
+Ben Celsi
+CSE 403
+January 27th, 2019
+Individual Status Report
+
+Section 1:
+	N/A
+Section 2:
+	This week, I met with my team to figure out the goals of our projects, I helped 
+	write our team's proposal, I downloaded Maya and familiarized myself with its 
+	basic layout and interface
+
+Section 3:
+	In the coming week, I will meet with my team to formally define our roles and 
+	tasks, split the project into manageable pieces.  I will also work more on 
+	writing scripts in Maya, and research Maya's API for creating plugins and its
+	abilities
