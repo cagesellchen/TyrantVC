@@ -1,0 +1,14 @@
+Annie Gesellchen
+CSE 403
+February 5th, 2019
+Individual Status Report
+
+
+Section 1:
+[First week]
+
+Section 2: 
+This past week, I helped set up our git account and contributed to the project proposal. 
+
+Section 3:
+This coming week, I will help our team design the architecture for our project and create a presentation on our project and its architecture/design plan. 
