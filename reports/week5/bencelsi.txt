@@ -1,0 +1,20 @@
+Ben Celsi
+CSE 403
+February 4th, 2019
+Individual Status Report
+
+Section 1:
+	In the coming week, I will meet with my team to formally define our roles and 
+	tasks, split the project into manageable pieces.  I will also work more on 
+	writing scripts in Maya, and research Maya's API for creating plugins and its
+	abilities
+Section 2:
+	This week, I met with my team to create a detailed feature list, and formerly define the behavior
+	of our UI.  We also chose our technologies (PyQT for frontend, PyMEL/Git for backend, and Python to
+	connect them) 
+	We also split into 2 teams: front end (Carson and myself) and back end (Vlad and Annie)
+	Unfortunately I haven't started using Maya yet, however I only just was assigned to the frontend
+	team so I now have a more clear idea of what I need to work on.
+Section 3:
+	In the coming week, I will research PyQT, and meet with Carson to start development on our front
+	end application.  We will also work with the backend team to create a more formal specification.
