@@ -1,0 +1,16 @@
+Carson Wilk
+CSE 403
+February 5th, 2019
+Individual Status Report
+
+Section 1:
+	N/A
+
+Section 2: 
+	This week, I helped write the project proposal, specifically focusing on editing our original
+	project pitch and expanding the problem and motivation sections.
+	
+Section 3:
+	This coming week, I will work with the team to develop our project architecture and define
+	roles for individual members. Additionally, we will start work on the user manual and begin
+	tests for implementation or the implementation itself.

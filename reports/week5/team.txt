@@ -1,0 +1,20 @@
+Week 5 Team Report - TyrantVC
+
+1. N/A
+
+2. Last week:
+-The whole team discussed the structure of our software and created a feature list
+-Split into 2 teams: Frontend (Carson and Ben) and Backend (Vlad and Annie)
+- Carson and Ben added a UI mockup/descriptions to the report
+-Annie and Vlad added a UML diagram/descriptioins to the report
+
+3. Next week:
+- Annie and Vlad will perform our first presentation on our project on Friday. 
+- We will all discuss/incorporate the feedback on our UI and architecture and the changes that have been made to the proposal
+-We will address this in our proposal and begin initial development in our respective teams.
+- We will create a user manual
+
+4.  Meeting agenda:
+- Get feedback on our UI diagram and designs
+- Get feedback on our UML diagram
+- Get feedback on additions to our report, goals for next week

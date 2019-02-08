@@ -1,0 +1,15 @@
+Volodymyr Loyko
+CSE 403
+February 4th, 2019
+Individual Status Report
+
+Section 1:
+	N/A
+Section 2:
+	This week I worked on the implementation and evaluation sections of the project report. I met with my team to discuss
+  the project, explain what Maya is in more detail for the two new members of our team who are new to Maya as well as connnect
+  on the overarching goal of the project.
+
+Section 3:
+	In the coming week, I will attend our team meeting where we will define the architecture of our project and split into 
+  two smaller teams. Then I will work on my smaller team to fill in our part of the project report.
