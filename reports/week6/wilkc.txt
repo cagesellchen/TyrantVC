@@ -1,0 +1,19 @@
+Carson Wilk
+CSE 403
+February 11th, 2019
+Individual Status Report
+
+Section 1:
+	This coming week, I will work with the team to develop our project architecture and define
+	roles for individual members. Additionally, we will start work on the user manual and begin
+	tests for implementation or the implementation itself.
+
+Section 2: 
+	This week, I worked with the team to develop our project architecture and defined roles. 
+	Specifically, I drew the UI mockups and helped define the behavior for it in the architecture
+	document. Due to the snow days, we have not yet been able to meet to work on the user manual.
+	
+Section 3:
+	This coming week, I will work with the team to develop our user manual and begin implementation
+	of our project.
+	
