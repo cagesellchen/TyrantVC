@@ -1,0 +1,19 @@
+Week 6 Team Report - TyrantVC
+  
+1. What we planned to do last week:
+- Annie and Vlad will perform our first presentation on our project on Friday.
+- We will all discuss/incorporate the feedback on our UI and architecture and the changes that have been made to the proposal
+-We will address this in our proposal and begin initial development in our respective teams.
+- We will create a user manual
+
+2. What we did last week:
+- Annie and Vlad created the presentation deck, but we won't present until this Friday due to the snow.
+- We discussed/incorporated the feedback on our UI and architecture and made changes to the proposal
+- Vlad, Carson and Ben created the user manual
+
+3. Next week:
+- Annie and Vlad will perform our first presentation on our project on Friday.
+- We will begin the initial development of our project in our respective teams.
+
+4.  Meeting agenda:
+- Get feedback on our updated report and user manual.
