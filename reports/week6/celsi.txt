@@ -1,0 +1,17 @@
+Ben Celsi
+CSE 403
+February 4th, 2019
+Individual Status Report
+
+Section 1:
+In the coming week, I will research PyQT, and meet with Carson to start development on our front
+end application.  We will also work with the backend team to create a more formal specification.
+
+Section 2:
+This past week, I worked primarily on the user manual, describing the layout of the UI and the functionality
+of the various components.  Through this process, I also talked with my teammates about the specific 
+our software, narrowing in on what features should be included.
+
+Section 3:
+Next week we will begin implementation.  I will start working with PyQT and the team will set up our 
+environment within our repo.
