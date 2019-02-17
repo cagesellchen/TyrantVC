@@ -1,12 +1,13 @@
 import os
 
-# This method creates a new repo and
+# This method creates a new repo
+# return ???
 def createRepo(reponame):
     return None
 
 
-# This method returns the files in a repo to populate
-# the file/commit browser (???)
+# This method loads a repo
+# return ???
 def loadRepo(reponame):
     return None
 
@@ -19,8 +20,8 @@ def commit(filelist, message):
 
 # This method returns the code for a specific version of a file
 # filename must be a path to the given file
-def getFileVersion(commit, filepath):
-    return os.popen("git show " + commit + ":" + filepath).read()
+def getFileVersion(commitId, filepath):
+    return os.popen("git show " + commitId + ":" + filepath).read()
 
 # This method returns the name, date, and message of every commit
 # that modified a given file.
@@ -32,25 +33,24 @@ def getFileVersionHistory(filename):
 
     data = []
     for i in range(int(len(outlist)/6)):
-        commit = outlist[i*6][7:]
-        date = outlist[i*6 + 2][8:]
-        message = outlist[i*6 + 4][4:]
-        data.append([commit, date, message])
+        commitId = outlist[i*6][7:]  # removing "commit: " text
+        date = outlist[i*6 + 2][8:]  # removing "date: " text & tab
+        message = outlist[i*6 + 4][4:]  # removing tab
+        data.append([commitId, date, message])
 
     return data
 
 
-# This commit returns the name of every file that was modified in
-# a given commit
-def getCommit(commit):
-    return None
-
+# This commit returns the name of every file that was in a given commit
+def getCommit(commitId):
+    return os.popen("git diff-tree --no-commit-id --name-only -r " + commitId).read().split()
 
 
 def main():
     # commit(["GitAccess.py"], "Testing Commit from a Python File")
     # getFileVersion("27819af5d2f0bea526e1c177feb08f68563839c0", "BackEnd/GitAccess.py")
-    getFileVersionHistory("GitAccess.py")
+    # print(getFileVersionHistory("GitAccess.py"))
+    print(getCommit("27819af5d2f0bea526e1c177feb08f68563839c0"))
 
 
 if __name__ == '__main__':
