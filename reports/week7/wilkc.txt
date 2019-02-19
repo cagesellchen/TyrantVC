@@ -1,0 +1,19 @@
+Carson Wilk
+CSE 403
+February 18th, 2019
+Individual Status Report
+
+Section 1:
+	This coming week, I will work with the team to develop our user manual and begin implementation
+	of our project.
+
+Section 2: 
+	This week, I worked with the team to develop our user manual. I also did some tests with
+	Maya's plugin UI and python scripting, working with PySide2 to test UI development. I also
+	responded to feedback in the proposal and user manual.
+	
+Section 3:
+	This coming week, I will continue working on implementation of our project, adding continuous
+	integration, and having a working commit button by our Thursday meeting.
+	
+	
