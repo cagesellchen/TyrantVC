@@ -1,3 +1,8 @@
+Ben Celsi
+CSE 403
+February 18th, 2019
+Individual Status Report
+
 Section 1:
 Next week we will begin implementation.  I will start working with PyQT and the team will set up our 
 environment within our repo.
