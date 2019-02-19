@@ -1,0 +1,13 @@
+Section 1:
+Next week we will begin implementation.  I will start working with PyQT and the team will set up our 
+environment within our repo.
+
+Section 2:
+This past week, I added a frontend directory to our repo, started started playing around with various 
+APIs, not specifically working on implementating or software, but using widgets and layouts.  Through
+this process I decided not to use PyQt, but instead to use a very similar API called PySide. The 
+advantage of PySide is that it is included with Maya, so no additional installations are necessary.
+
+Section 3:
+Next week I will continue to work in PySide, meet with Carson to co-ordinate our strategy to tackle the
+frontend, and implement a rough version of our frontend layout.
