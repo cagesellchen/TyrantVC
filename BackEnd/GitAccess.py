@@ -1,14 +1,23 @@
 import os
 
+
+def test(text):
+    return text + text
+
 # This method creates a new repo
-# return ???
+# return None
 def createRepo(reponame):
+    os.system("cd " + reponame)
+    os.system("git init")
+    os.system("git add --all")
+    os.system("git commit -m \"first commit\"")
     return None
 
 
 # This method loads a repo
-# return ???
+# return None
 def loadRepo(reponame):
+    os.system("cd " + reponame)
     return None
 
 
