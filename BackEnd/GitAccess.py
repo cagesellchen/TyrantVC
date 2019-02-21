@@ -5,13 +5,20 @@ def test(text):
     return text + text
 
 # This method creates a new repo
-# return None
+# return 0 if successfully created a repo
 def createRepo(reponame):
-    os.system("cd " + reponame)
-    os.system("git init")
-    os.system("git add --all")
-    os.system("git commit -m \"first commit\"")
-    return None
+    # move inside the right directory
+    os.chdir(reponame)
+    
+    # try to initialize a repo
+    success = os.system("git init")
+    
+    # if succsefully initialized, add all the files and commit them
+    if success == 0:
+        success = os.system("git add --all")
+        success = os.system("git commit -m \"first commit\"")
+    
+    return success
 
 
 # This method loads a repo
@@ -22,9 +29,11 @@ def loadRepo(reponame):
 
 
 # This method adds and commits a list of files
+# return 0 if succesfully committed
 def commit(filelist, message):
-    os.system("git add " + " ".join(filelist))
-    os.system("git commit -m " + "\"" + message + "\"")
+    success = os.system("git add " + " ".join(filelist))
+    success = os.system("git commit -m " + "\"" + message + "\"")
+    return success
 
 
 # This method returns the code for a specific version of a file
