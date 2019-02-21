@@ -1,0 +1,14 @@
+Annie Gesellchen
+CSE 403
+Feb 13th
+Weekly Status Report
+
+Section 1 (From last week):
+This coming week, I will present our project to the class on Friday, and begin implementation. I will help implement our project over the next few weeks, and then help test it.
+
+Section 2:
+Last week, I presented our project to the class. I also created GitAccess.py and implemented many of the required functions.
+
+Section 3:
+This coming week, I will start on RepoSelect.py, and help Vlad figure out how to integrate our python files with Maya / frontend. 
+
