@@ -1,0 +1,18 @@
+Volodymyr Loyko
+CSE 403
+February 18th, 2019
+Individual Status Report
+
+Section 1:
+In the coming week, I plan on presenting with Annie, working on the user manual, specifically on modifying so it fits our
+target audience's needs. I also plan on starting the implementation process for the backend of our project, more 
+specifically the gitaccess component.
+  
+Section 2:
+This week, I updated the presentation, and presented it with Annie. I also wrote the first half of the user manual and edited
+the project proposal. I've discussed implementation and testing strategies of gitaccess with Annie and implemented a repo methods
+and wrote the test suite.
+  
+Section 3:
+This coming week I am planning on adding any missing functionality to GitAcces, creating documentation for running the tests in Maya
+installing the plugin, and beginning to work on the middleman classes which require the MainPanel class from the FrontEnd team.
