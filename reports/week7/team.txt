@@ -1,0 +1,20 @@
+Week 7 Team Report - TyrantVC
+  
+1. What we planned to do last week:
+- Annie and Vlad will perform our first presentation on our project on Friday.
+- We will begin the initial development of our project in our respective teams
+
+2. What we did last week:
+- Annie and Vlad presented our project to the class
+- Annie and Vlad created our GitAccess.py file and implemented necessary functions
+- Vlad created tests for GitAccess.py
+- Ben and Carson began working on the front end, creating a panel/button in Maya.
+- We set up CI
+
+3. Next week:
+- We will continue to work on implementation:
+--- Annie and Vlad will work on figuring out how to integrate GitAccess with Maya and work on RepoSelect.py
+--- Ben and Carson will work on creating our main panel
+
+4.  Meeting agenda:
+- Discuss feedback on our presentation.
