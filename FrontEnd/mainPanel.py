@@ -23,20 +23,37 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
         
         super(TyrantVCMainPanel, self).__init__(parent)
         
+        ### UI section
         
-        self.button1 = QPushButton()
-        self.button1.setText('PushMe')
+        central_widget = QWidget()
+        main_layout = QVBoxLayout()
         
-        layout = QVBoxLayout()
-        layout.addWidget(self.button1)
-        self.setLayout(layout)
+        tab_widget = QTabWidget()
+        files_tab_widget = QWidget()
+        commits_tab_widget = QWidget()
+        
+        # TODO: Insert things into the files and commits widgets here
+        
+        tab_widget.addTab(files_tab_widget, 'Files')
+        tab_widget.addTab(commits_tab_widget, 'Commits')
+        main_layout.addWidget(tab_widget)
+        
+        self.commit_btn = QPushButton()
+        self.commit_btn.setText('Commit')
+        self.commit_btn.clicked.connect(self.on_commit_btn_click)
+        main_layout.addWidget(self.commit_btn)
+        
+        central_widget.setLayout(main_layout)
+        self.setCentralWidget(central_widget)
+        
         self.setWindowTitle('TyrantVC')
         
-        self.setAttribute(Qt.WA_DeleteOnClose)
-    
-    # Should be triggered automatically when the panel is closed
-    #def dockCloseEventTriggered(self):
-    #    self.delete_instances()
+        self.setAttribute(Qt.WA_DeleteOnClose)   
+
+    # Called upon clicking the commit button, should open up the staging area window
+    def on_commit_btn_click(self):
+        print 'commit!'
+        
     
     # Calls MEL workspaceControl command to check if the given
     # control exists, and if it does, closes and deletes it
@@ -66,7 +83,8 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
         self.setObjectName(self.OBJECT_NAME)
         
         self.show(dockable=True, area='right', floating=False)
-        cmds.workspaceControl(self.WORKSPACE_NAME, e=True, ttc=["AttributeEditor", -1], wp='preferred', mw=300)
+        # Attach this to the outliner (-1 means append to the bottom)
+        cmds.workspaceControl(self.WORKSPACE_NAME, e=True, ttc=['Outliner', -1], wp='preferred', mw=300)
         self.raise_()
         
         self.setDockableParameters(width=300)
