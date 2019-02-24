@@ -28,6 +28,21 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
         central_widget = QWidget()
         main_layout = QVBoxLayout()
         
+        action_1 = QWidgetAction(self)
+        action_1_label = QLabel()
+        action_1_label.setText("Hello")
+        action_1.setDefaultWidget(action_1_label)
+        
+        self.repo_button = QPushButton()
+        self.repo_button.setText('MyProject1')
+        self.repo_menu = QMenu()
+        self.repo_menu.addAction("MyProject1")
+        self.repo_menu.addAction("MyProject2")
+        self.repo_menu.addAction(action_1)
+        self.repo_button.setMenu(self.repo_menu)
+        
+        main_layout.addWidget(self.repo_button)
+        
         tab_widget = QTabWidget()
         files_tab_widget = QWidget()
         commits_tab_widget = QWidget()
@@ -49,6 +64,7 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
         self.setWindowTitle('TyrantVC')
         
         self.setAttribute(Qt.WA_DeleteOnClose)   
+        
 
     # Called upon clicking the commit button, should open up the staging area window
     def on_commit_btn_click(self):
