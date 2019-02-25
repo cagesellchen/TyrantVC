@@ -1,7 +1,7 @@
 import maya.OpenMaya as OpenMaya
 import maya.OpenMayaMPx as OpenMayaMPx
 
-from tyrantvc.front_end import main_panel
+from TyrantVC.src import main_panel
 
 # method for loading the main panel from the script editor
 class open_tyrant_vc(OpenMayaMPx.MPxCommand):
@@ -9,7 +9,7 @@ class open_tyrant_vc(OpenMayaMPx.MPxCommand):
         OpenMayaMPx.MPxCommand.__init__(self)
  
     def doIt(self, argList):
-        print("test")
+        main_panel.main()
  
 def creator():
     return OpenMayaMPx.asMPxPtr( open_tyrant_vc() )
