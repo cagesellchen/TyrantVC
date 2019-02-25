@@ -69,9 +69,10 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
         self.repo_button.setMenu(self.repo_menu)
             
         self.repo_button.setText(repo_list[0][0])
-            
+    
+    # Called upon clicking a project in the repo_list        
     def repo_menu_item_clicked(self, item):
-        print item[0]
+        self.repo_button.setText(item[0])
         
     def create_new_repo(self):
         pass
