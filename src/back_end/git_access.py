@@ -6,7 +6,7 @@ def test(text):
 
 # This method creates a new repo
 # return 0 if successfully created a repo
-def createRepo(reponame):
+def create_repo(reponame):
     # move inside the right directory
     os.chdir(reponame)
     
@@ -23,7 +23,7 @@ def createRepo(reponame):
 
 # This method loads a repo
 # return None
-def loadRepo(reponame):
+def load_repo(reponame):
     os.system("cd " + reponame)
     return None
 
@@ -38,13 +38,13 @@ def commit(filelist, message):
 
 # This method returns the code for a specific version of a file
 # filename must be a path to the given file
-def getFileVersion(commitId, filepath):
+def get_file_version(commitId, filepath):
     return os.popen("git show " + commitId + ":" + filepath).read()
 
 # This method returns the name, date, and message of every commit
 # that modified a given file.
 # return data format: [[commit, date, message],[]...]
-def getFileVersionHistory(filename):
+def get_file_version_history(filename):
     outlist = os.popen("git log --follow -- " + filename).read().splitlines()
     outlist.append("")  # last commit entry doesn't have a blank line after it
                         # resulting in one less line than the other entries
@@ -60,7 +60,7 @@ def getFileVersionHistory(filename):
 
 
 # This commit returns the name of every file that was in a given commit
-def getCommit(commitId):
+def get_commit(commitId):
     return os.popen("git diff-tree --no-commit-id --name-only -r " + commitId).read().split()
 
 
@@ -68,7 +68,7 @@ def main():
     # commit(["GitAccess.py"], "Testing Commit from a Python File")
     # getFileVersion("27819af5d2f0bea526e1c177feb08f68563839c0", "BackEnd/GitAccess.py")
     # print(getFileVersionHistory("GitAccess.py"))
-    print(getCommit("27819af5d2f0bea526e1c177feb08f68563839c0"))
+    print(get_commit("27819af5d2f0bea526e1c177feb08f68563839c0"))
 
 
 if __name__ == '__main__':

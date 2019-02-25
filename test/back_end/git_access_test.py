@@ -1,10 +1,10 @@
 import unittest
-import GitAccess
+from tyrantvc.src.back_end import git_access
 import os
 import shutil
 
 
-class GitAccessTest(unittest.TestCase):
+class git_access_test(unittest.TestCase):
     # name of the repo where tests are performed
     reponame = "testrepo"
     
@@ -12,10 +12,10 @@ class GitAccessTest(unittest.TestCase):
     basedir = ""
 
     # list of file names in the test repo
-    testFiles = []
+    test_files = []
 
     # runs before each test
-    def setUp(self):
+    def set_up(self):
         # get the directory of the process
         self.basedir = os.getcwd()
 
@@ -26,10 +26,10 @@ class GitAccessTest(unittest.TestCase):
         for i in range(5):
             filename = "test" + str(i) + ".txt"
             os.system("echo \"test " + str(i) + "\" > " + self.reponame + "/" + filename)
-            self.testFiles.append(filename)
+            self.test_files.append(filename)
 
     #runs after each test
-    def tearDown(self):
+    def tear_down(self):
         # move to the directory of the repo
         os.chdir(self.basedir)
 
@@ -38,36 +38,36 @@ class GitAccessTest(unittest.TestCase):
 
     # test whether the unit testing is working
     def test_test(self):
-        self.assertEqual(GitAccess.test("test"), "testtest")
+        self.assertEqual(git_access.test("test"), "testtest")
 
     # test whether a repo can successfully be created
-    def test_createRepo(self):
-        self.assertEqual(GitAccess.createRepo(self.basedir + "/" + self.reponame), 0)
+    def test_create_repo(self):
+        self.assertEqual(git_access.createRepo(self.basedir + "/" + self.reponame), 0)
 
     # test commit a change to a file
     def test_commit(self):
         # create a repo
-        GitAccess.createRepo(self.basedir + "/" + self.reponame)
+        git_access.createRepo(self.basedir + "/" + self.reponame)
 
         # apply a change to a file
-        fileChanged = self.testFiles[0]
+        fileChanged = self.test_files[0]
         os.system("echo \"updated\" > " + fileChanged)
         
-        self.assertEqual(GitAccess.commit([fileChanged], "update file"), 0)
+        self.assertEqual(git_access.commit([fileChanged], "update file"), 0)
 
     # test commit a change to a file
-    def test_getFileVersionHistory(self):
+    def test_get_file_version_history(self):
         # create a repo
-        GitAccess.createRepo(self.basedir + "/" + self.reponame)
+        git_access.createRepo(self.basedir + "/" + self.reponame)
 
         # apply a change to a file
-        fileChanged = self.testFiles[0]
-        os.system("echo \"updated\" > " + fileChanged)
+        file_changed = self.test_files[0]
+        os.system("echo \"updated\" > " + file_changed)
         
         # commit the change
-        GitAccess.commit([fileChanged], "update file")
+        git_access.commit([file_changed], "update file")
 
-        print(GitAccess.getFileVersionHistory(fileChanged))
+        print(git_access.get_file_version_history(file_changed))
 
 
 
