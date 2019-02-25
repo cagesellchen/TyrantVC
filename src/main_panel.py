@@ -6,6 +6,7 @@ from PySide2.QtGui import *
 from PySide2.QtWidgets import *
 from shiboken2 import wrapInstance
 import re
+import git_access
 
 
 def get_main_window():
@@ -76,7 +77,7 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
     # Called upon clicking a project in the project_list. Sets the button text       
     def project_menu_item_clicked(self, item):
         self.project_button.setText(item[0])
-        # TODO: gitaccess loadproject
+        git_access.load_repo(item[1])
     
     # Called upon clicking the create new project button
     def create_new_project(self):
@@ -89,7 +90,7 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
         self.project_list.append((project_name, project_path))
         # TODO: write to config file
         self.populate_project_menu()
-        # TODO: gitaccess createproject
+        git_access.create_repo(project_path)
         self.project_button.setText(project_name)
 
     # Called upon clicking the commit button, should open up the staging area window
