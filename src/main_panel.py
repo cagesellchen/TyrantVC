@@ -5,7 +5,7 @@ from PySide2.QtCore import *
 from PySide2.QtGui import * 
 from PySide2.QtWidgets import *
 from shiboken2 import wrapInstance
-
+import re
 
 
 def get_main_window():
@@ -27,10 +27,14 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
         
         central_widget = QWidget()
         main_layout = QVBoxLayout()
-          
-        self.populate_repo_menu()
+        
+        self.project_button = QPushButton()
+        self.project_menu = QMenu()
+        self.project_list = None
+                  
+        self.populate_project_menu()
    
-        main_layout.addWidget(self.repo_button)
+        main_layout.addWidget(self.project_button)
         
         tab_widget = QTabWidget()
         files_tab_widget = QWidget()
@@ -54,27 +58,39 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
         
         self.setAttribute(Qt.WA_DeleteOnClose)   
 
-    def populate_repo_menu(self):
-        self.repo_button = QPushButton()
-        self.repo_button.setText('MyProject1')
-        self.repo_menu = QMenu()
-        
-        # here is where we call our config file wrapper and get the info...
+    def populate_project_menu(self):
+        self.project_menu.clear() 
+        # TODO: here is where we call our config file wrapper and get the info...
         # it should return a list of tuples
-        repo_list = [('MyProject1', 'folder1'), ('MyProject2', 'folder2'), ('MyProject3', 'folder3')]
-        for item in repo_list:
-            self.repo_menu.addAction(item[0], lambda t=item: self.repo_menu_item_clicked(t))
+        if self.project_list is None:
+            self.project_list = [('MyProject1', 'folder1'), ('MyProject2', 'folder2'), ('MyProject3', 'folder3')]
             
-        self.repo_menu.addAction("Create new repo...", self.create_new_repo)
-        self.repo_button.setMenu(self.repo_menu)
+        for item in self.project_list:
+            self.project_menu.addAction(item[0], lambda t=item: self.project_menu_item_clicked(t))
             
-        self.repo_button.setText(repo_list[0][0])
+        self.project_menu.addAction("Create new project...", self.create_new_project)
+        self.project_button.setMenu(self.project_menu)
             
-    def repo_menu_item_clicked(self, item):
-        print item[0]
-        
-    def create_new_repo(self):
-        pass
+        self.project_button.setText("No Project Selected")
+    
+    # Called upon clicking a project in the project_list. Sets the button text       
+    def project_menu_item_clicked(self, item):
+        self.project_button.setText(item[0])
+        # TODO: gitaccess loadproject
+    
+    # Called upon clicking the create new project button
+    def create_new_project(self):
+        res = cmds.fileDialog2(fileMode=3, dialogStyle=2, okCaption='Accept', caption='Select Folder for Project')
+        if res is None:
+            # they cancelled the file picker
+            return
+        project_path = res[0]
+        project_name = re.split(r'[/\\]', project_path)[-1]
+        self.project_list.append((project_name, project_path))
+        # TODO: write to config file
+        self.populate_project_menu()
+        # TODO: gitaccess createproject
+        self.project_button.setText(project_name)
 
     # Called upon clicking the commit button, should open up the staging area window
     def on_commit_btn_click(self):
