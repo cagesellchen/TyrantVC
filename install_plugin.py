@@ -18,9 +18,9 @@ elif platform == "darwin":
 elif platform == "win32" or platform == "win64":
     # Windows...
     print("Installing TyrantVC on Windows...")
-    if(not os.path.isdir("C:\\Users\\" + str(os.getlogin()) + "Documents\\maya\\2019\\plug-ins")):
-        os.makedirs("C:\\Users\\" + str(os.getlogin()) + "Documents\\maya\\2019\\plug-ins")
-    os.chdir("C:\\Users\\" + str(os.getlogin()) + "Documents\\maya\\2019\\plug-ins")
+    if(not os.path.isdir("C:\\Users\\" + str(os.getlogin()) + "\\Documents\\maya\\2019\\plug-ins")):
+        os.makedirs("C:\\Users\\" + str(os.getlogin()) + "\\Documents\\maya\\2019\\plug-ins")
+    os.chdir("C:\\Users\\" + str(os.getlogin()) + "\\Documents\\maya\\2019\\plug-ins")
     print("Downloading TyrantVC...")
     os.system("git clone https://github.com/cagesellchen/TyrantVC.git")
     print("Successfully download TyrantVC...\nSetting up the files...")
