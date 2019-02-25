@@ -14,10 +14,8 @@ class TyrantVCStagingUI(QMainWindow):
     
     def __init__(self, project_name, file_list, parent=None):
        super(TyrantVCStagingUI, self).__init__(parent)
-       # main_layout = QVBoxLayout()
-       
+  
        self.setWindowTitle(project_name + ' Commit')
-       
        central_widget = QWidget()
        main_layout = QVBoxLayout()
        
