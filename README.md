@@ -39,7 +39,7 @@ If this does not work you can perform the installation manually by downloading a
 **Windows:**
 1. Open the Command Prompt
 2. Navigate to the Maya plugin folder: 
-> cd "C:\Program Files\Autodesk\Maya2019\bin\plug-ins"
+> cd C:\Program Files\Autodesk\Maya2019\bin\plug-ins
 3. Clone our repo: 
 > git clone https://github.com/cagesellchen/TyrantVC
 4. Move tyrantvc.py to its parent folder (plug-ins): 
