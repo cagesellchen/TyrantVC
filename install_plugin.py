@@ -11,7 +11,7 @@ elif platform == "darwin":
     os.chdir("/Users/Shared/Autodesk/maya/plug-ins")
     print("Downloading TyrantVC...")
     os.system("git clone https://github.com/cagesellchen/TyrantVC.git")
-    print("Successfully download TyrantVC...\nSetting up the files...")
+    print("Successfully downloaded TyrantVC...\nSetting up the files...")
     os.system("mv TyrantVC/tyrantvc.py tyrantvc.py")
     print("TyrantVC installed! Please restart Maya and search for \"tyrantvc\" in the Plug-In Manager.")
     
@@ -23,6 +23,6 @@ elif platform == "win32" or platform == "win64":
     os.chdir("C:\\Program Files\\Autodesk\\Maya2019\\bin\\plug-ins")
     print("Downloading TyrantVC...")
     os.system("git clone https://github.com/cagesellchen/TyrantVC.git")
-    print("Successfully download TyrantVC...\nSetting up the files...")
-    os.system("mv TyrantVC/tyrantvc.py tyrantvc.py")
+    print("Successfully downloaded TyrantVC...\nSetting up the files...")
+    os.system("move TyrantVC/tyrantvc.py tyrantvc.py")
     print("TyrantVC installed! Please restart Maya and search for \"tyrantvc\" in the Plug-In Manager.")
