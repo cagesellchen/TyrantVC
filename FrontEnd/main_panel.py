@@ -27,20 +27,9 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
         
         central_widget = QWidget()
         main_layout = QVBoxLayout()
-        
-        action_1 = QWidgetAction(self)
-        action_1_label = QLabel()
-        action_1_label.setText("Hello")
-        action_1.setDefaultWidget(action_1_label)
-        
-        self.repo_button = QPushButton()
-        self.repo_button.setText('MyProject1')
-        self.repo_menu = QMenu()
-        self.repo_menu.addAction("MyProject1")
-        self.repo_menu.addAction("MyProject2")
-        self.repo_menu.addAction(action_1)
-        self.repo_button.setMenu(self.repo_menu)
-        
+          
+        self.populate_repo_menu()
+   
         main_layout.addWidget(self.repo_button)
         
         tab_widget = QTabWidget()
@@ -64,7 +53,28 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
         self.setWindowTitle('TyrantVC')
         
         self.setAttribute(Qt.WA_DeleteOnClose)   
+
+    def populate_repo_menu(self):
+        self.repo_button = QPushButton()
+        self.repo_button.setText('MyProject1')
+        self.repo_menu = QMenu()
         
+        # here is where we call our config file wrapper and get the info...
+        # it should return a list of tuples
+        repo_list = [('MyProject1', 'folder1'), ('MyProject2', 'folder2'), ('MyProject3', 'folder3')]
+        for item in repo_list:
+            self.repo_menu.addAction(item[0], lambda t=item: self.repo_menu_item_clicked(t))
+            
+        self.repo_menu.addAction("Create new repo...", self.create_new_repo)
+        self.repo_button.setMenu(self.repo_menu)
+            
+        self.repo_button.setText(repo_list[0][0])
+            
+    def repo_menu_item_clicked(self, item):
+        print item[0]
+        
+    def create_new_repo(self):
+        pass
 
     # Called upon clicking the commit button, should open up the staging area window
     def on_commit_btn_click(self):
