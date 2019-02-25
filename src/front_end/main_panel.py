@@ -71,7 +71,7 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
         self.project_menu.addAction("Create new project...", self.create_new_project)
         self.project_button.setMenu(self.project_menu)
             
-        self.project_button.setText(self.project_list[0][0])
+        self.project_button.setText("No Project Selected")
     
     # Called upon clicking a project in the project_list. Sets the button text       
     def project_menu_item_clicked(self, item):
@@ -81,6 +81,9 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
     # Called upon clicking the create new project button
     def create_new_project(self):
         res = cmds.fileDialog2(fileMode=3, dialogStyle=2, okCaption='Accept', caption='Select Folder for Project')
+        if res is None:
+            # they cancelled the file picker
+            return
         project_path = res[0]
         project_name = re.split(r'[/\\]', project_path)[-1]
         self.project_list.append((project_name, project_path))
