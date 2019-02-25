@@ -10,8 +10,6 @@ TyrantVC is a version control plugin for Maya which provides users with access t
 * Git
 
 ## Installing TyrantVC
-1. Download [install_plugin.py](https://raw.githubusercontent.com/cagesellchen/TyrantVC/master/install_plugin.py). (Click the link, right click, and select "Save As...". Save it to your downloads folder as a Python script)
-
 **MacOSX:**
 1. Open the terminal
 2. Navigate to downloads:
