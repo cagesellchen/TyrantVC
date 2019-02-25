@@ -1,2 +1,2 @@
 language: python
-script: python BackEnd/GitAccessTest.py
+script: python run_tests.py

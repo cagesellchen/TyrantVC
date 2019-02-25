@@ -62,14 +62,3 @@ def get_file_version_history(filename):
 # This commit returns the name of every file that was in a given commit
 def get_commit(commitId):
     return os.popen("git diff-tree --no-commit-id --name-only -r " + commitId).read().split()
-
-
-def main():
-    # commit(["GitAccess.py"], "Testing Commit from a Python File")
-    # getFileVersion("27819af5d2f0bea526e1c177feb08f68563839c0", "BackEnd/GitAccess.py")
-    # print(getFileVersionHistory("GitAccess.py"))
-    print(get_commit("27819af5d2f0bea526e1c177feb08f68563839c0"))
-
-
-if __name__ == '__main__':
-    main()

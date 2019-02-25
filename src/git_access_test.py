@@ -1,5 +1,5 @@
 import unittest
-from tyrantvc.src.back_end import git_access
+import git_access
 import os
 import shutil
 
@@ -15,7 +15,8 @@ class git_access_test(unittest.TestCase):
     test_files = []
 
     # runs before each test
-    def set_up(self):
+    def setUp(self):
+        print("setting up")
         # get the directory of the process
         self.basedir = os.getcwd()
 
@@ -29,7 +30,7 @@ class git_access_test(unittest.TestCase):
             self.test_files.append(filename)
 
     #runs after each test
-    def tear_down(self):
+    def tearDown(self):
         # move to the directory of the repo
         os.chdir(self.basedir)
 
@@ -42,12 +43,12 @@ class git_access_test(unittest.TestCase):
 
     # test whether a repo can successfully be created
     def test_create_repo(self):
-        self.assertEqual(git_access.createRepo(self.basedir + "/" + self.reponame), 0)
+        self.assertEqual(git_access.create_repo(self.basedir + "/" + self.reponame), 0)
 
     # test commit a change to a file
     def test_commit(self):
         # create a repo
-        git_access.createRepo(self.basedir + "/" + self.reponame)
+        git_access.create_repo(self.basedir + "/" + self.reponame)
 
         # apply a change to a file
         fileChanged = self.test_files[0]
@@ -58,7 +59,7 @@ class git_access_test(unittest.TestCase):
     # test commit a change to a file
     def test_get_file_version_history(self):
         # create a repo
-        git_access.createRepo(self.basedir + "/" + self.reponame)
+        git_access.create_repo(self.basedir + "/" + self.reponame)
 
         # apply a change to a file
         file_changed = self.test_files[0]
@@ -68,9 +69,6 @@ class git_access_test(unittest.TestCase):
         git_access.commit([file_changed], "update file")
 
         print(git_access.get_file_version_history(file_changed))
-
-
-
     
 if __name__ == '__main__':
     unittest.main()
