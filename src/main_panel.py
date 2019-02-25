@@ -6,7 +6,7 @@ from PySide2.QtGui import *
 from PySide2.QtWidgets import *
 from shiboken2 import wrapInstance
 import re
-import git_access
+#import git_access
 
 
 def get_main_window():
@@ -42,6 +42,12 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
         commits_tab_widget = QWidget()
         
         # TODO: Insert things into the files and commits widgets here
+        file_layout = QVBoxLayout()
+        self.file_model = QFileSystemModel()
+        file_tree = QTreeView()
+        file_tree.setModel(self.file_model)
+        file_layout.addWidget(file_tree)
+        files_tab_widget.setLayout(file_layout)
         
         tab_widget.addTab(files_tab_widget, 'Files')
         tab_widget.addTab(commits_tab_widget, 'Commits')
@@ -77,7 +83,8 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
     # Called upon clicking a project in the project_list. Sets the button text       
     def project_menu_item_clicked(self, item):
         self.project_button.setText(item[0])
-        git_access.load_repo(item[1])
+        self.file_model.setRootPath(item[1])
+        #git_access.load_repo(item[1])
     
     # Called upon clicking the create new project button
     def create_new_project(self):
@@ -90,8 +97,9 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
         self.project_list.append((project_name, project_path))
         # TODO: write to config file
         self.populate_project_menu()
-        git_access.create_repo(project_path)
+        #git_access.create_repo(project_path)
         self.project_button.setText(project_name)
+        self.file_model.setRootPath(project_path)
 
     # Called upon clicking the commit button, should open up the staging area window
     def on_commit_btn_click(self):
