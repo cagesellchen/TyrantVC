@@ -63,7 +63,7 @@ class TyrantVCStagingUI(QMainWindow):
 def main(project_path):
     global main_panel
     main_panel = TyrantVCStagingUI(project_name = project_path,
-        file_list = ["All files."],
+        file_list = git_access.get_files_changed(),
         parent=get_main_window())
     main_panel.run()
     return main_panel
