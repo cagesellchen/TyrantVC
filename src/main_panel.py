@@ -6,7 +6,8 @@ from PySide2.QtGui import *
 from PySide2.QtWidgets import *
 from shiboken2 import wrapInstance
 import re
-#import git_access
+import git_access
+import stagingUI
 
 
 def get_main_window():
@@ -18,6 +19,8 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
     OBJECT_NAME = 'TyrantVCMainPanel'
     # The name of the workspace control associated with this panel
     WORKSPACE_NAME = OBJECT_NAME + 'WorkspaceControl'
+
+    project_path = ""
     
     def __init__(self, parent=None):
         self.delete_instances()
@@ -84,7 +87,7 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
     def project_menu_item_clicked(self, item):
         self.project_button.setText(item[0])
         self.file_model.setRootPath(item[1])
-        #git_access.load_repo(item[1])
+        git_access.load_repo(item[1])
     
     # Called upon clicking the create new project button
     def create_new_project(self):
@@ -92,18 +95,22 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
         if res is None:
             # they cancelled the file picker
             return
-        project_path = res[0]
-        project_name = re.split(r'[/\\]', project_path)[-1]
-        self.project_list.append((project_name, project_path))
+        self.project_path = res[0]
+        project_name = re.split(r'[/\\]', self.project_path)[-1]
+        self.project_list.append((project_name, self.project_path))
         # TODO: write to config file
         self.populate_project_menu()
-        #git_access.create_repo(project_path)
+        
+        #DEBUG
+        print ("project_path = " + str(self.project_path))
+        
+        git_access.create_repo(self.project_path)
         self.project_button.setText(project_name)
-        self.file_model.setRootPath(project_path)
+        self.file_model.setRootPath(self.project_path)
 
     # Called upon clicking the commit button, should open up the staging area window
     def on_commit_btn_click(self):
-        print 'commit!'
+        stagingUI.main(self.project_path)
         
     
     # Calls MEL workspaceControl command to check if the given

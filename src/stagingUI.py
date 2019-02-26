@@ -3,6 +3,7 @@ from PySide2.QtCore import *
 from PySide2.QtGui import * 
 from PySide2.QtWidgets import *
 from shiboken2 import wrapInstance
+import git_access
 
 def get_main_window():
     main_window_ptr = omui.MQtUtil.mainWindow()
@@ -20,8 +21,8 @@ class TyrantVCStagingUI(QMainWindow):
        main_layout = QVBoxLayout()
        
        #File List
-       self.file_list = QListWidget();
-       self.file_list.label = QLabel("Select Files to Commit:");
+       self.file_list = QListWidget()
+       self.file_list.label = QLabel("Select Files to Commit:")
        main_layout.addWidget(self.file_list.label)
        main_layout.addWidget(self.file_list)
        for f in file_list:
@@ -29,7 +30,7 @@ class TyrantVCStagingUI(QMainWindow):
            
        #Commit Message
        self.commit_msg = QPlainTextEdit()
-       self.commit_msg.label = QLabel("Enter Commit Message:");
+       self.commit_msg.label = QLabel("Enter Commit Message:")
        main_layout.addWidget(self.commit_msg.label)
        main_layout.addWidget(self.commit_msg)
        
@@ -45,9 +46,10 @@ class TyrantVCStagingUI(QMainWindow):
        
     def on_commit_btn_click(self):
         if (self.commit_msg.toPlainText() == ""):
-            print "NO MESSAGE"
+            print ("NO MESSAGE")
         else:
-            print "PRETEND THIS COMMITTED SOMETHING!"
+            print ("PRETEND THIS COMMITTED SOMETHING!")
+            git_access.commit(".", self.commit_msg.toPlainText())
             self.close()
             
     # Sets up the panel and displays it. Should be called after creation
@@ -58,14 +60,10 @@ class TyrantVCStagingUI(QMainWindow):
     def delete_instances(self):     
         self.deleteLater()
             
-def main():
+def main(project_path):
     global main_panel
-    main_panel = TyrantVCStagingUI(project_name = "MyProject",
-        file_list = ["1st file", "2nd file", "3rd file"],
+    main_panel = TyrantVCStagingUI(project_name = project_path,
+        file_list = ["All files."],
         parent=get_main_window())
     main_panel.run()
     return main_panel
-    
-
-if __name__ == '__main__':
-    main()
