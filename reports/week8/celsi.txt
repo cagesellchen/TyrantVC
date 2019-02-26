@@ -1,0 +1,16 @@
+Ben Celsi
+CSE 403
+Feb 25th
+Weekly Status Report
+
+Section 1:
+Next week I will continue to work in PySide, meet with Carson to co-ordinate our strategy to tackle the
+frontend, and implement a rough version of our frontend layout.
+
+Section 2:
+Last week, I continued researching PySide2 and I met with the whole group to quickly ramp up our implementation efforts.
+I worked on the StagingUI component of our frontend development, figured out how Maya handles plugins, and our strategy for installation/integration with the plugin manager.
+
+Section 3:
+This coming week, I will continue to work on frontend development: 
+adding the checkbox functionality to StagingUI, adding our frontend element for displaying past commits, and using the frontend to call our backend git_access file.
