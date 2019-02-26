@@ -1,0 +1,13 @@
+Annie Gesellchen
+CSE 403
+Feb 25th
+Weekly Status Report
+
+Section 1 (From last week):
+This coming week, I will start on RepoSelect.py, and help Vlad figure out how to integrate our python files with Maya / frontend.
+
+Section 2:
+Last week, I updated our user manual to reflect feedback and accurately describe how to download and run our plugin. I also helped set up CI for our project by integrating Travis CI with our github repo and adding the badge.
+
+Section 3:
+This coming week, I will continue to help integrate our python files with the frontend team. I will also update git_access.py as needed to reflect the needs of the frontend team, and add any necessary functions to interface with git.
