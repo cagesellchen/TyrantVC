@@ -3,7 +3,7 @@ from PySide2.QtCore import *
 from PySide2.QtGui import * 
 from PySide2.QtWidgets import *
 from shiboken2 import wrapInstance
-import git_access
+#import git_access
 
 def get_main_window():
     main_window_ptr = omui.MQtUtil.mainWindow()
@@ -26,8 +26,10 @@ class TyrantVCStagingUI(QMainWindow):
        main_layout.addWidget(self.file_list.label)
        main_layout.addWidget(self.file_list)
        for f in file_list:
-           self.file_list.addItem(f)
+           qlw.setCheckState(Qt.Checked)
+           self.file_list.addItem(qlw)
            
+       
        #Commit Message
        self.commit_msg = QPlainTextEdit()
        self.commit_msg.label = QLabel("Enter Commit Message:")
@@ -59,7 +61,7 @@ class TyrantVCStagingUI(QMainWindow):
         
     def delete_instances(self):     
         self.deleteLater()
-            
+
 def main(project_path):
     global main_panel
     main_panel = TyrantVCStagingUI(project_name = project_path,
@@ -67,3 +69,6 @@ def main(project_path):
         parent=get_main_window())
     main_panel.run()
     return main_panel
+
+#if __name__ == '__main__':
+#    main("n/a")
