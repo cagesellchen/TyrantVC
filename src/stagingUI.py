@@ -3,7 +3,7 @@ from PySide2.QtCore import *
 from PySide2.QtGui import * 
 from PySide2.QtWidgets import *
 from shiboken2 import wrapInstance
-#import git_access
+import git_access
 
 def get_main_window():
     main_window_ptr = omui.MQtUtil.mainWindow()
@@ -26,9 +26,11 @@ class TyrantVCStagingUI(QMainWindow):
        main_layout.addWidget(self.file_list.label)
        main_layout.addWidget(self.file_list)
        for f in file_list:
+           qlw = QListWidgetItem(f)
            qlw.setCheckState(Qt.Checked)
            self.file_list.addItem(qlw)
            
+       
        
        #Commit Message
        self.commit_msg = QPlainTextEdit()
@@ -50,9 +52,16 @@ class TyrantVCStagingUI(QMainWindow):
         if (self.commit_msg.toPlainText() == ""):
             print ("NO MESSAGE")
         else:
-            print ("PRETEND THIS COMMITTED SOMETHING!")
-            git_access.commit(".", self.commit_msg.toPlainText())
-            self.close()
+            commit_list = []
+            for i in range (0, self.file_list.count()):
+                item = self.file_list.item(i)
+                if (item.checkState() == Qt.Checked):
+                    commit_list.append(item.text())
+            if commit_list == []:
+                print ("NO COMMITS")
+            else:
+                git_access.commit(commit_list, self.commit_msg.toPlainText())
+                self.close()
             
     # Sets up the panel and displays it. Should be called after creation
     def run(self):
@@ -70,5 +79,5 @@ def main(project_path):
     main_panel.run()
     return main_panel
 
-#if __name__ == '__main__':
-#    main("n/a")
+if __name__ == '__main__':
+    main("")
