@@ -58,6 +58,13 @@ def get_file_version_history(filename):
 
     return data
 
+# Method to see which files have been changed since the last commit.
+# returns a list of file names changed
+def get_files_changed():
+    outlist = os.popen("git diff --name-only").read().splitlines()
+    outlist += os.popen("git ls-files --other --exclude-standard").read().splitlines()
+    return outlist
+
 
 # This commit returns the name of every file that was in a given commit
 def get_commit(commitId):

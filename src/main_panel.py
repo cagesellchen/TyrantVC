@@ -19,8 +19,6 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
     OBJECT_NAME = 'TyrantVCMainPanel'
     # The name of the workspace control associated with this panel
     WORKSPACE_NAME = OBJECT_NAME + 'WorkspaceControl'
-
-    project_path = ""
     
     def __init__(self, parent=None):
         self.delete_instances()
@@ -47,9 +45,9 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
         # TODO: Insert things into the files and commits widgets here
         file_layout = QVBoxLayout()
         self.file_model = QFileSystemModel()
-        file_tree = QTreeView()
-        file_tree.setModel(self.file_model)
-        file_layout.addWidget(file_tree)
+        self.file_tree = QTreeView()
+        self.file_tree.setModel(self.file_model)
+        file_layout.addWidget(self.file_tree)
         files_tab_widget.setLayout(file_layout)
         
         tab_widget.addTab(files_tab_widget, 'Files')
@@ -73,7 +71,7 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
         # TODO: here is where we call our config file wrapper and get the info...
         # it should return a list of tuples
         if self.project_list is None:
-            self.project_list = [('MyProject1', 'folder1'), ('MyProject2', 'folder2'), ('MyProject3', 'folder3')]
+            self.project_list = []
             
         for item in self.project_list:
             self.project_menu.addAction(item[0], lambda t=item: self.project_menu_item_clicked(t))
@@ -107,6 +105,7 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
         git_access.create_repo(self.project_path)
         self.project_button.setText(project_name)
         self.file_model.setRootPath(self.project_path)
+        self.file_tree.setRootIndex(self.file_model.index(self.project_path))
 
     # Called upon clicking the commit button, should open up the staging area window
     def on_commit_btn_click(self):

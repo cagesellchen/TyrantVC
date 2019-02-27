@@ -1,0 +1,19 @@
+Volodymyr Loyko
+CSE 403
+February 25th, 2019
+Individual Status Report
+
+Section 1:
+This coming week I am planning on adding any missing functionality to GitAcces, creating documentation for running the tests in Maya
+installing the plugin, and beginning to work on the middleman classes which require the MainPanel class from the FrontEnd team.
+  
+Section 2:
+This week I finished GitAccess, wrote tests for them, implemented CI for the project. During our big push session on Sunday I refactored
+the repo and added aditional scripts including tyrantvc.py and install_plugin.py to make the plugin easily installable and so the file
+strucutre makes sense and is interpertable by Maya. I also worked on connecting main_panel and stagingUI to git access, preparing the plugin
+for a user study.
+  
+Section 3:
+I need to draft up instructions for the user study and adjust the instructions for the windows machines in the animation labs. Along with that
+there are still features that I want to add, like being able to select which exact files we want to commit. Finally I need to run the user study and
+continue implementing features described in the report, such as being able to view history of the repo or individual files.
