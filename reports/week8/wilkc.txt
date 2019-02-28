@@ -1,0 +1,20 @@
+Carson Wilk
+CSE 403
+February 25th, 2019
+Individual Status Report
+
+Section 1:
+	This coming week, I will continue working on implementation of our project, adding continuous
+	integration, and having a working commit button by our Thursday meeting.
+
+Section 2: 
+	This week, I worked with the team to develop the implementation of our project. Specifically,
+	I worked on the front end UI, building the main panel and the drop-down menu to select a
+	project, as well as setting up the files and commits tabs with basic functionality.
+	
+Section 3:
+	This coming week, I will continue working on the front end, filling out the commits tab on 
+	the UI and responding to feedback from the user studies that we ran this week.
+	
+	
+	
