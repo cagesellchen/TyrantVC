@@ -17,12 +17,12 @@ Week 8 Team Report - TyrantVC
 3. Next week:
 - We will continue to work on implementation:
 - Displaying scripts from previous commits, add settings/help, pop up warnings,
-- Hopefully have completely finished version
+- Commits tab, highlight modified files in file view, clicking file to view commit history
 - Incorporate feedback from user tests- clearer user manual, UI
 - Conduct more user tests
 
 
 4.  Meeting agenda:
-- Demonstrate our product works so far, what to prioritize moving forward, goals
+- Demonstrate how our product works so far, what to features prioritize moving forward
 - Discuss information from user tests, how to incorporate
 - Discuss what is expected at the presentation on Friday
