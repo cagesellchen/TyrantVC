@@ -1,0 +1,28 @@
+Week 8 Team Report - TyrantVC
+  
+1. What we planned to do last week:
+- We will continue to work on implementation:
+--- Annie and Vlad will work on figuring out how to integrate GitAccess with Maya and work on RepoSelect.py
+--- Ben and Carson will work on creating our main panel
+
+2. What we did last week:
+- We all met as a group to complete the bulk of our implementation, figure out logistics of installation
+- Vlad worked on the installer, made tests for git_access, connected backend and frontend
+- Ben and Carson worked on frontend (main panel and staging UI)
+- Annie updated report and user manual and set up CI
+- Carson and Vlad conducted user tests, wrote
+- Ben created slides for presentation on Friday
+- Ben wrote the team status report, in fact, he's writing it right now.
+
+3. Next week:
+- We will continue to work on implementation:
+- Displaying scripts from previous commits, add settings/help, pop up warnings,
+- Hopefully have completely finished version
+- Incorporate feedback from user tests- clearer user manual, UI
+- Conduct more user tests
+
+
+4.  Meeting agenda:
+- Demonstrate our product works so far, what to prioritize moving forward, goals
+- Discuss information from user tests, how to incorporate
+- Discuss what is expected at the presentation on Friday
