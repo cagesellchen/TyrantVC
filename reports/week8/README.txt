@@ -1,0 +1,1 @@
+Including preparation for presenting, we spent a total of 5 hours on this assignment.
