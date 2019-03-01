@@ -24,5 +24,5 @@ elif platform == "win32" or platform == "win64":
     print("Downloading TyrantVC...")
     os.system("git clone https://github.com/cagesellchen/TyrantVC.git")
     print("Successfully downloaded TyrantVC...\nSetting up the files...")
-    os.system("move TyrantVC/tyrantvc.py tyrantvc.py")
+    os.system("move TyrantVC\\tyrantvc.py")
     print("TyrantVC installed! Please restart Maya and search for \"tyrantvc\" in the Plug-In Manager.")
