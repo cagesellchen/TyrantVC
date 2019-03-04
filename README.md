@@ -6,58 +6,39 @@ Version control systems are tools that allow you to manage changes to source cod
 TyrantVC is a version control plugin for Maya which provides users with access to standard version control functionality for their scripting projects, including committing files and viewing previous versions of your project. The plugin includes the addition of a special UI panel to the Maya Environment which allows you to access all of this functionality in an intuitive way.
 
 ## Prerequisites
+* MacOSX
 * Maya 2017 or newer
 * Git
 
 ## Installing TyrantVC
 **MacOSX:**
-1. Open the terminal
-2. Navigate to downloads:
-> cd Downloads
-3. Download install_plugin.py:
-> wget https://raw.githubusercontent.com/cagesellchen/TyrantVC/master/install_plugin.py
-4. Run install_plugin.py
-> python install_plugin.py
-5. Make sure the plug-in is loaded in the Plug-in Manager.
+1. Open [install_plugin.py](https://raw.githubusercontent.com/cagesellchen/TyrantVC/master/install_plugin.py)
+2. Save this file by right clicking and selecting **Save As...**
+3. In Finder, drag and drop this file into the Maya viewfinder.
 
-**Windows:**
-1. Open the Command Prompt as an Administrator (right click the Command Prompt shortcut and select "Run as Administrator")
-2. Navigate to downloads:
-> cd "Downloads"
-3. Download install_plugin.py:
-> curl https://raw.githubusercontent.com/cagesellchen/TyrantVC/master/install_plugin.py
-4. Run install_plugin.py
-> py install-plugin.py
-
+### Checking that it worked:
 Doing this should download all of the plugin files to the correct location on your disk. You should check this by doing the following:
 
 1. In Maya, open the Plugin Manager. You can do this by selecting the Windows tab, going to Settings/Preferences, and clicking on Plug-in Manager.
-2. In the Plug-in Manager, scroll through the plugins until you see TyrantVC. 
-Make sure Loaded and Auto load are both checked.
+2. In the Plug-in Manager, scroll through the plugins until you see TyrantVC.
 
-If this does not work you can perform the installation manually by downloading all of the script files and moving them to the correct location on your disk:
+**Make sure Loaded and Auto load are both checked.**
 
-**Windows:**
-1. Open the Command Prompt
-2. Navigate to the Maya plugin folder: 
-> cd "C:\Program Files\Autodesk\Maya2019\bin\plug-ins"
-3. Clone our repo: 
-> git clone https://github.com/cagesellchen/TyrantVC
-4. Move tyrantvc.py to its parent folder (plug-ins): 
-> move TyrantVC/tyrantvc.py
+### To Manually Install...
+If you don't see the TyrantVC plugin in the Plug-in Manager, you can perform the installation manually by downloading all of the script files and moving them to the correct location on your disk:
 
 **MacOSX:**
 1. Open the terminal
 2. Navigate to the Maya plugin folder: 
-> cd /Users/Shared/Autodesk/maya/plug-ins
+> `cd $HOME/Library/Preferences/Autodesk/maya/plug-ins`
 3. Clone our repo: 
-> git clone https://github.com/cagesellchen/TyrantVC
+> `git clone https://github.com/cagesellchen/TyrantVC`
 4. Move tyrantvc.py to its parent folder (plug-ins): 
-> mv TyrantVC/tyrantvc.py .
+> `mv TyrantVC/tyrantvc.py .`
 
-Note that you need the period at the end of the above command
+Note that you need the period at the end of the above command.
 
-You should restart Maya if it was open. Check that TyrantVC shows up in the Plug-in Manager, and that Loaded and Auto load are both checked (see above for instructions on how to do this). 
+You should restart Maya if it was open. Check that TyrantVC shows up in the Plug-in Manager, and that Loaded and Auto load are both checked ([see above for instructions on how to do this](#checking-that-it-worked)). 
 
 There should be a new tab in the shelves panel called TyrantVC. In that tab, click the first icon to open up the plugin. Instructions on what each element of that panel does and how to operate the plugin are listed below.
 
