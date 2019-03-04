@@ -35,7 +35,9 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
         self.project_button = QPushButton()
         self.project_menu = QMenu()
         self.project_list = None
-                  
+        self.project_path = None
+        
+        self.project_name = None
         self.populate_project_menu()
    
         main_layout.addWidget(self.project_button)
@@ -90,7 +92,9 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
         
         self.project_button.setText(item[0])
         #TODO: refactor with create_new_project into set path method?
+        self.project_name = item[0]
         self.project_path = item[1]
+        
         self.file_model.setRootPath(item[1])
         self.file_tree.setRootIndex(self.file_model.index(self.project_path))
       
@@ -112,7 +116,7 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
                return
             #    PySide.QtGui.QMessageBox QStatusBar.showMessage("Error: a project of this name already exists")
             #    return
-        
+        self.project_name = project_name
         self.project_path = res[0]
         self.project_list.append((project_name, self.project_path))
         # TODO: write to config file
@@ -131,9 +135,13 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
     # Called upon clicking the commit button, should open up the staging area window
     def on_commit_btn_click(self):
         print "on_commit_btn_click"
-        stagingUI.main(self.project_path)
-        
-    
+        if (self.project_path == None):
+            cmds.warning("No project currently open")
+        elif (git_access.get_files_changed() == []):
+            cmds.warning("No files in '" + self.project_name + "' have been modified")
+        else:
+            stagingUI.main(self.project_path)
+            
     # Calls MEL workspaceControl command to check if the given
     # control exists, and if it does, closes and deletes it
     def delete_control(self, name):
