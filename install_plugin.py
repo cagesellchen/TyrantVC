@@ -1,6 +1,7 @@
 from sys import platform
 import os
 import getpass
+import shutil
 
 ## Installationg script for TyrantVC plugin. 
 ## Drag and drop the script into viewfinder panel in Maya
@@ -19,7 +20,7 @@ def install_tyrantvc():
         print("TyrantVC is not supported on Linux yet.")  
     elif platform == "darwin":
         # OSX
-        retreive_plugin_files("$HOME/Library/Preferences/Autodesk/maya/plug-ins") 
+        retreive_plugin_files(os.environ['HOME'] + "/Library/Preferences/Autodesk/maya/plug-ins") 
     elif platform == "win32" or platform == "win64":
         # Windows
         retreive_plugin_files("\\Users\\" + getpass.getuser() + "\\Documents\\maya\\plug-ins") 
@@ -30,12 +31,16 @@ def retreive_plugin_files(maya_plugin_path):
     
     # check whether the plugin path exists directory exists
     if not os.path.isdir(maya_plugin_path):
-       os.makedirs(maya_plugin_path)
+        print("Plugin directory not found. Creating one.")
+        os.makedirs(maya_plugin_path)
+    
+    print("Moving to " + maya_plugin_path)
     os.chdir(maya_plugin_path)
     
     # check whether the plugin is already installed
     if os.path.isdir(REPO_NAME) and os.path.isfile(PLUGIN_FILE):
-        os.removedirs(REPO_NAME)
+        print("TyrantVC is already installed, deleting old version.")
+        shutil.rmtree(REPO_NAME)
         os.remove(PLUGIN_FILE)
 
     print("Downloading TyrantVC script files.")
@@ -45,9 +50,10 @@ def retreive_plugin_files(maya_plugin_path):
     print("Successfully downloaded TyrantVC.")
     print("Setting up the files.")
     
-    os.system("mv " + REPO_NAME + "/" + PLUGIN_FILE + ".py " + PLUGIN_FILE)  
+    os.system("mv " + REPO_NAME + "/" + PLUGIN_FILE + " " + PLUGIN_FILE)  
    
     print("TyrantVC installed!")
 
-
-install_tyrantvc()
+def onMayaDroppedPythonFile(arg):
+    #print(arg)
+    install_tyrantvc()
