@@ -73,12 +73,12 @@ class TyrantVCStagingUI(QMainWindow):
         self.deleteLater()
 
 def main(project_path):
-    global main_panel
-    main_panel = TyrantVCStagingUI(project_name = project_path,
+    global staging_ui
+    staging_ui = TyrantVCStagingUI(project_name = project_path,
         file_list = git_access.get_files_changed(),
         parent=get_main_window())
-    main_panel.run()
-    return main_panel
+    staging_ui.run()
+    return staging_ui
 
 if __name__ == '__main__':
     main("")
