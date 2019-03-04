@@ -30,9 +30,7 @@ class TyrantVCStagingUI(QMainWindow):
            qlw = QListWidgetItem(f)
            qlw.setCheckState(Qt.Checked)
            self.file_list.addItem(qlw)
-           
-       
-       
+
        #Commit Message
        self.commit_msg = QPlainTextEdit()
        self.commit_msg.label = QLabel("Enter Commit Message:")
@@ -50,19 +48,21 @@ class TyrantVCStagingUI(QMainWindow):
        self.setCentralWidget(central_widget)
        
     def on_commit_btn_click(self):
+        # No commit message
         if (self.commit_msg.toPlainText() == ""):
-            print ("NO MESSAGE")
+                cmds.warning("Commit message is required")
         else:
             commit_list = []
             for i in range (0, self.file_list.count()):
                 item = self.file_list.item(i)
                 if (item.checkState() == Qt.Checked):
                     commit_list.append(item.text())
+            # No files selected
             if commit_list == []:
-                print ("NO COMMITS")
+                cmds.warning("Select at least one file to commit")
             else:
                 git_access.commit(commit_list, self.commit_msg.toPlainText())
-                self.close()
+                self.delete_instances()
             
     # Sets up the panel and displays it. Should be called after creation
     def run(self):
@@ -70,9 +70,10 @@ class TyrantVCStagingUI(QMainWindow):
         self.raise_()
         
     def delete_instances(self):     
-        self.deleteLater()
+        self.close()
 
 def main(project_path):
+    # Create staging UI
     global staging_ui
     staging_ui = TyrantVCStagingUI(project_name = project_path,
         file_list = git_access.get_files_changed(),
