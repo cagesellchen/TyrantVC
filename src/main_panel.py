@@ -1,4 +1,4 @@
-from maya.app.general.mayaMixin import MayaQWidgetDockableMixin
+from maya.app    .general.mayaMixin import MayaQWidgetDockableMixin
 from maya import OpenMayaUI as omui
 from maya import cmds as cmds
 from PySide2.QtCore import * 
@@ -87,8 +87,13 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
     # Called upon clicking a project in the project_list. Sets the button text       
     def project_menu_item_clicked(self, item):
         print "project_menu_item_clicked"
+        
         self.project_button.setText(item[0])
+        #TODO: refactor with create_new_project into set path method?
+        self.project_path = item[1]
         self.file_model.setRootPath(item[1])
+        self.file_tree.setRootIndex(self.file_model.index(self.project_path))
+      
         git_access.load_repo(item[1])
     
     # Called upon clicking the create new project button
@@ -98,8 +103,17 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
         if res is None:
             # they cancelled the file picker
             return
+        
+        project_name = re.split(r'[/\\]', res[0])[-1]
+        for item in self.project_list:
+            print item[0]
+            if (item[0] == project_name):
+               cmds.warning("A project with name '" + item[0] + "' already exisits")
+               return
+            #    PySide.QtGui.QMessageBox QStatusBar.showMessage("Error: a project of this name already exists")
+            #    return
+        
         self.project_path = res[0]
-        project_name = re.split(r'[/\\]', self.project_path)[-1]
         self.project_list.append((project_name, self.project_path))
         # TODO: write to config file
         self.populate_project_menu()
@@ -108,10 +122,12 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
         print ("project_path = " + str(self.project_path))
         
         git_access.create_repo(self.project_path)
+        
         self.project_button.setText(project_name)
         self.file_model.setRootPath(self.project_path)
         self.file_tree.setRootIndex(self.file_model.index(self.project_path))
-
+   
+        
     # Called upon clicking the commit button, should open up the staging area window
     def on_commit_btn_click(self):
         print "on_commit_btn_click"
