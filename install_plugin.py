@@ -1,28 +1,53 @@
 from sys import platform
 import os
-if platform == "linux" or platform == "linux2":
-    # linux
-    print("TyrantVC is incompatible with Linux operating system.")
-elif platform == "darwin":
-    # OS X
-    print("Installing TyrantVC on OSX...")
-    if(not os.path.isdir("/Users/Shared/Autodesk/maya/plug-ins")):
-        os.makedirs("/Users/Shared/Autodesk/maya/plug-ins")
-    os.chdir("/Users/Shared/Autodesk/maya/plug-ins")
-    print("Downloading TyrantVC...")
-    os.system("git clone https://github.com/cagesellchen/TyrantVC.git")
-    print("Successfully downloaded TyrantVC...\nSetting up the files...")
-    os.system("mv TyrantVC/tyrantvc.py tyrantvc.py")
-    print("TyrantVC installed! Please restart Maya and search for \"tyrantvc\" in the Plug-In Manager.")
+import getpass
+
+## Installationg script for TyrantVC plugin. 
+## Drag and drop the script into viewfinder panel in Maya
+## to run the script.
+
+# Location of the plugin on github
+REPO_NAME = "TyrantVC"
+PLUGIN_FILE = "tyrantvc.py"
+GIT_PATH = "https://github.com/cagesellchen/" + REPO_NAME + ".git"
+
+def install_tyrantvc():
+
+    # determine which platform we are running on
+    if platform == "linux" or platform == "linux2":
+        # Linux
+        print("TyrantVC is not supported on Linux yet.")  
+    elif platform == "darwin":
+        # OSX
+        retreive_plugin_files("$HOME/Library/Preferences/Autodesk/maya/plug-ins") 
+    elif platform == "win32" or platform == "win64":
+        # Windows
+        retreive_plugin_files("\\Users\\" + getpass.getuser() + "\\Documents\\maya\\plug-ins") 
+
+def retreive_plugin_files(maya_plugin_path):
     
-elif platform == "win32" or platform == "win64":
-    # Windows...
-    print("Installing TyrantVC on Windows...")
-    if(not os.path.isdir("C:\\Program Files\\Autodesk\\Maya2019\\bin\\plug-ins")):
-        os.makedirs("C:\\Program Files\\Autodesk\\Maya2019\\bin\\plug-ins")
-    os.chdir("C:\\Program Files\\Autodesk\\Maya2019\\bin\\plug-ins")
-    print("Downloading TyrantVC...")
-    os.system("git clone https://github.com/cagesellchen/TyrantVC.git")
-    print("Successfully downloaded TyrantVC...\nSetting up the files...")
-    os.system("move TyrantVC\\tyrantvc.py")
-    print("TyrantVC installed! Please restart Maya and search for \"tyrantvc\" in the Plug-In Manager.")
+    print("Starting installation of TyrantVC.")
+    
+    # check whether the plugin path exists directory exists
+    if not os.path.isdir(maya_plugin_path):
+       os.makedirs(maya_plugin_path)
+    os.chdir(maya_plugin_path)
+    
+    # check whether the plugin is already installed
+    if os.path.isdir(REPO_NAME) and os.path.isfile(PLUGIN_FILE):
+        os.removedirs(REPO_NAME)
+        os.remove(PLUGIN_FILE)
+
+    print("Downloading TyrantVC script files.")
+
+    os.system("git clone " + GIT_PATH)
+    
+    print("Successfully downloaded TyrantVC.")
+    print("Setting up the files.")
+    
+    os.system("mv " + REPO_NAME + "/" + PLUGIN_FILE + ".py " + PLUGIN_FILE)  
+   
+    print("TyrantVC installed!")
+
+
+install_tyrantvc()
