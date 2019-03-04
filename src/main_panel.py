@@ -27,6 +27,9 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
         
         super(TyrantVCMainPanel, self).__init__(parent)
         
+        ### Panels
+        self.staging_ui = None
+        
         ### UI section
         
         central_widget = QWidget()
@@ -36,10 +39,11 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
         self.project_menu = QMenu()
         self.project_list = None
         self.project_path = None
-        
         self.project_name = None
         self.populate_project_menu()
-   
+     
+     
+     
         main_layout.addWidget(self.project_button)
         
         tab_widget = QTabWidget()
@@ -137,11 +141,16 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
         print "on_commit_btn_click"
         if (self.project_path == None):
             cmds.warning("No project currently open")
+       
         elif (git_access.get_files_changed() == []):
             cmds.warning("No files in '" + self.project_name + "' have been modified")
         else:
-            stagingUI.main(self.project_path)
-            
+            if (self.staging_ui != None):
+                self.staging_ui.delete_instances()
+                self.staging_ui = None
+            self.staging_ui = stagingUI.main(self.project_path)
+
+
     # Calls MEL workspaceControl command to check if the given
     # control exists, and if it does, closes and deletes it
     def delete_control(self, name):
