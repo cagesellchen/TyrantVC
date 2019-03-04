@@ -9,6 +9,7 @@ def get_main_window():
     main_window_ptr = omui.MQtUtil.mainWindow()
     return wrapInstance(long(main_window_ptr), QWidget)
     
+#TODO: disallow multiple stagingUIs open at same time
 class TyrantVCStagingUI(QMainWindow):    
     # The name of the object for this panel, used to identify it by Maya
 

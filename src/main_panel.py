@@ -14,6 +14,7 @@ def get_main_window():
     main_window_ptr = omui.MQtUtil.mainWindow()
     return wrapInstance(long(main_window_ptr), QWidget)
     
+#TODO: Split into FileBrowserUI and CommitBrowserUI
 class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
     # The name of the object for this panel, used to identify it by Maya
     OBJECT_NAME = 'TyrantVCMainPanel'
@@ -21,6 +22,7 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
     WORKSPACE_NAME = OBJECT_NAME + 'WorkspaceControl'
     
     def __init__(self, parent=None):
+        print "__init__"
         self.delete_instances()
         
         super(TyrantVCMainPanel, self).__init__(parent)
@@ -67,6 +69,7 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
         self.setAttribute(Qt.WA_DeleteOnClose)   
 
     def populate_project_menu(self):
+        print "populate_project_menu"
         self.project_menu.clear() 
         # TODO: here is where we call our config file wrapper and get the info...
         # it should return a list of tuples
@@ -83,12 +86,14 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
     
     # Called upon clicking a project in the project_list. Sets the button text       
     def project_menu_item_clicked(self, item):
+        print "project_menu_item_clicked"
         self.project_button.setText(item[0])
         self.file_model.setRootPath(item[1])
         git_access.load_repo(item[1])
     
     # Called upon clicking the create new project button
     def create_new_project(self):
+        print "create_new_project"
         res = cmds.fileDialog2(fileMode=3, dialogStyle=2, okCaption='Accept', caption='Select Folder for Project')
         if res is None:
             # they cancelled the file picker
@@ -109,12 +114,14 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
 
     # Called upon clicking the commit button, should open up the staging area window
     def on_commit_btn_click(self):
+        print "on_commit_btn_click"
         stagingUI.main(self.project_path)
         
     
     # Calls MEL workspaceControl command to check if the given
     # control exists, and if it does, closes and deletes it
     def delete_control(self, name):
+        print "delete_control"
         if cmds.workspaceControl(name, q=True, exists=True):
             cmds.workspaceControl(name, e=True, close=True)
             cmds.deleteUI(name, control=True)
@@ -122,7 +129,7 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
     # Deletes lingering instances of the panel and its workspace
     # control -- Maya can't have multiple panels with the same name up.
     def delete_instances(self):
-        
+        print "delete_instances"
         # For now since we're docking automatically, it looks like we don't
         # need this cleanup step, we just need to delete the control.
         # However, we should keep this code around in case we change things
@@ -137,6 +144,7 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
     
     # Sets up the panel and displays it. Should be called after creation        
     def run(self):
+        print "run"
         self.setObjectName(self.OBJECT_NAME)
         
         self.show(dockable=True, area='right', floating=False)
