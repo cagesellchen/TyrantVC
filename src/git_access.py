@@ -1,39 +1,33 @@
 import os
 
-
-def test(text):
-    return text + text
-
-# This method creates a new repo
+# Creates a new repo or loads an existing repo from an existing folder
 # return 0 if successfully created a repo
 def create_repo(reponame):
     # move inside the right directory
     os.chdir(reponame)
     
-    # try to initialize a repo
-    success = os.system("git init")
-    
-    # if succsefully initialized, add all the files and commit them
-    if success == 0:
-        success = os.system("git add --all")
-        success = os.system("git commit -m \"first commit\"")
+    # initialize a repo
+    success = 0
+
+    empty_dir_flag = len(os.listdir(reponame))
+
+    if not os.path.isdir(".git"):
+        success = os.system("git init")
+        
+        if empty_dir_flag:
+            success = os.system("git add --all")
+            success = os.system("git commit -m \"first commit\"")
     
     return success
-
-
-# This method loads a repo
-# return None
-def load_repo(reponame):
-    os.system("cd " + reponame)
-    return None
 
 
 # This method adds and commits a list of files
 # return 0 if succesfully committed
 def commit(filelist, message):
-    success = os.system("git add " + " ".join(filelist))
-    success = os.system("git commit -m " + "\"" + message + "\"")
-    return success
+    os.system("git add " + " ".join(filelist))
+    os.system("git commit -m " + "\"" + message + "\"")
+    commitId = os.popen("git rev-parse HEAD").read().splitlines()[0]
+    return commitId
 
 
 # This method returns the code for a specific version of a file
@@ -66,6 +60,6 @@ def get_files_changed():
     return outlist
 
 
-# This commit returns the name of every file that was in a given commit
-def get_commit(commitId):
+# Returns the name of every file that was in a given commit
+def get_committed_files(commitId):
     return os.popen("git diff-tree --no-commit-id --name-only -r " + commitId).read().split()
