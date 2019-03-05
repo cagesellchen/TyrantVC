@@ -1,6 +1,7 @@
 from maya.app    .general.mayaMixin import MayaQWidgetDockableMixin
 from maya import OpenMayaUI as omui
 from maya import cmds as cmds
+from maya import mel as mel
 from PySide2.QtCore import * 
 from PySide2.QtGui import * 
 from PySide2.QtWidgets import *
@@ -55,6 +56,7 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
         self.file_model = QFileSystemModel()
         self.file_tree = QTreeView()
         self.file_tree.setModel(self.file_model)
+        self.file_tree.doubleClicked.connect(self.on_file_double_click)
         file_layout.addWidget(self.file_tree)
         files_tab_widget.setLayout(file_layout)
         
@@ -73,6 +75,40 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
         self.setWindowTitle('TyrantVC')
         
         self.setAttribute(Qt.WA_DeleteOnClose)   
+
+    # Called when the file system model widget is double-clicked
+    # and opens the appropriate file in script editor using mel commands
+    def on_file_double_click(self):
+        index = self.file_tree.currentIndex()
+        file_path = self.file_model.filePath(index)
+        file_name = self.file_model.fileName(index)
+        ext = file_name.split('.')[1]
+        
+        # tries to select the tab with the given file name, if it finds it,
+        # then is selects it and returns 1.
+        res = mel.eval('selectExecuterTabByName(\"' + file_path + '\");')
+        if res == 1:
+            return  
+        
+        # couldn't find the tab, so we need to make it
+        selected = True
+        if ext == 'py':
+            mel.eval('buildNewExecuterTab(-1, "Python", "python", 0);')
+        elif ext == 'mel':
+            mel.eval('buildNewExecuterTab(-1, "MEL", "mel", 0);')
+        else:
+            selected = False
+            addNewExecuterTab("", 0);
+        
+        if selected:    
+            mel.eval('tabLayout -e -selectTabIndex `tabLayout -q -numberOfChildren $gCommandExecuterTabs` $gCommandExecuterTabs;')
+            mel.eval('selectCurrentExecuterControl();')
+            
+        mel.eval('delegateCommandToFocusedExecuterWindow("-e -loadFile \\"' + file_path + '\\"", 0);')
+        mel.eval('renameCurrentExecuterTab(\"' + file_path + '\", 0);')
+        mel.eval('delegateCommandToFocusedExecuterWindow "-e -modificationChangedCommand executerTabModificationChanged" 0;');
+        mel.eval('delegateCommandToFocusedExecuterWindow "-e -fileChangedCommand executerTabFileChanged" 0;')
+
 
     def populate_project_menu(self):
         print "populate_project_menu"
