@@ -1,0 +1,16 @@
+Ben Celsi
+CSE 403
+Feb 25th
+Weekly Status Report
+
+Section 1:
+This coming week, I will continue to work on frontend development: 
+adding the checkbox functionality to StagingUI, adding our frontend element for displaying past commits, and using the frontend to call our backend git_access file.
+
+Section 2:
+Last week, I fixed issues with main_panel, like adding error messages on creating duplicate projects, committing with no modifications or no projects, and updating 
+the file view on project changes.  I also added checkboxes to StagingUI, and fixed a bug that allowed duplicate StagingUIs.  I also gave our team presentation with 
+Carson on Friday.
+
+Section 3:
+Next week, I will work on the commit tab, incorporate our config file into the frontend, and separate the file tab and commit tab into 2 separate classes.
