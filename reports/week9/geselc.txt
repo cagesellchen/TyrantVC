@@ -1,0 +1,13 @@
+Annie Gesellchen
+CSE 403
+Feb 25th
+Weekly Status Report
+
+Section 1 (From last week):
+This coming week, I will continue to help integrate our python files with the frontend team. I will also update git_access.py as needed to reflect the needs of the frontend team, and add any necessary functions to interface with git.
+
+Section 2:
+This week, I created config_access.py, which provides methods for creating, parsing, and writing to a user's config file for our plugin. This file stores information about repos that they have loaded. I also updated our user manual to reflect changes we made in the installation of our project, which we changed based on feedback from our user tests.
+
+Section 3:
+This coming week, I will help test config_access.py, and continue upgrading our user manual. I will also help the frontend team work on the UI for our plugin, and help integrate the backend files with the frontend code.
