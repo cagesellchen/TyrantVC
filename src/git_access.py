@@ -63,3 +63,17 @@ def get_files_changed():
 # Returns the name of every file that was in a given commit
 def get_committed_files(commitId):
     return os.popen("git diff-tree --no-commit-id --name-only -r " + commitId).read().split()
+
+
+# Returns every commit in a tuple: (commit_id, date, message, files)
+# date is in Date format; ex: 'Tue Mar 5 10:16:30 2019 -0800'
+# files is a list of files; ex: ['src/config_access.py', 'src/main_panel.py']
+def get_all_commits():
+    outlist = os.popen("git log --pretty=format:\"%H\t%ad\t%s\" -100").read().splitlines()
+
+    data = []
+    for line in outlist:
+        lst = line.strip().split("\t")
+        data.append((lst[0], lst[1], lst[2], get_committed_files(lst[0])))
+
+    return data
