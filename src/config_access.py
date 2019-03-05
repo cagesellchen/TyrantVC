@@ -16,14 +16,14 @@ def parse_config():
         try:
             f = open(config_path, 'w')
         except IOError as e:
-            print e
+            print(e)
         f.close()
         return []
         
     with open(config_path, 'r') as config_file:
         tuple_list = []
         for line in config_file:
-            lst = line.strip().split(" ")
+            lst = line.strip().split("\t")
             tuple_list.append((lst[0], lst[1]))
 
     return tuple_list
@@ -36,5 +36,5 @@ def parse_config():
 def add_config(repo_name, repo_path):
     config_path = get_config_path()
     f = open(config_path, 'a')
-    f.write(repo_name + " " + repo_path + "\n")
+    f.write(repo_name + "\t" + repo_path + "\n")
     f.close()
