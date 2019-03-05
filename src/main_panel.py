@@ -71,6 +71,61 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
         file_layout.addWidget(self.file_tree)
         files_tab_widget.setLayout(file_layout)
         
+        # set up the commits tab
+        commits_layout = QVBoxLayout()
+        
+        commits_list = QWidget()
+        commits_list_layout = QVBoxLayout()
+        
+        # proof of concept for commit UI
+        for i in range(12):
+            first_box = QFrame()
+            first_box.setFrameStyle(QFrame.StyledPanel)
+            first_box.setLineWidth(2)
+            first_box.setMaximumHeight(80)
+            first_box.setMaximumWidth(230)
+            
+            first_box_layout = QGridLayout()
+            label = QLabel()
+            label.setText('1:')
+            tf = label.font()
+            tf.setBold(True)
+            tf.setPixelSize(int(tf.pixelSize() * 1.5))
+            label.setFont(tf)
+            first_box_layout.addWidget(label, 0, 0)
+            
+            label2 = QLabel()
+            label2.setText('first 50 characters of commit message go here.....')
+            label2.setWordWrap(True)
+            tf = label2.font()
+            tf.setBold(True)
+            label2.setFont(tf)
+            first_box_layout.addWidget(label2, 0, 1)
+            
+            label3 = QLabel()
+            label3.setText('3/5/2019')
+            first_box_layout.addWidget(label3, 1, 0)
+            
+            label4 = QLabel()
+            label4.setText('6 files')
+            label4.setAlignment(Qt.AlignCenter)
+            first_box_layout.addWidget(label4, 1, 1)
+            
+            first_box.setLayout(first_box_layout)
+            
+            commits_list_layout.addWidget(first_box)
+            commits_list_layout.setAlignment(first_box, Qt.AlignTop)
+    
+        commits_list.setLayout(commits_list_layout)
+        
+        scroll_area = QScrollArea()
+        scroll_area.setWidget(commits_list)
+        scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        scroll_area.setWidgetResizable(False)
+        
+        commits_layout.addWidget(scroll_area)
+        commits_tab_widget.setLayout(commits_layout)
+        
         # add both the tabs to the layout
         tab_widget.addTab(files_tab_widget, 'Files')
         tab_widget.addTab(commits_tab_widget, 'Commits')
@@ -200,7 +255,7 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
         self.file_tree.setRootIndex(self.file_model.index(path))
         
         self.project_button.setText(name)
-        
+                
     # Called upon clicking the commit button, should open up the staging area window
     def on_commit_btn_click(self):
         if (self.project_path == None):
