@@ -1,0 +1,21 @@
+Carson Wilk
+CSE 403
+March 4th, 2019
+Individual Status Report
+
+Section 1:
+	This coming week, I will continue working on the front end, filling out the commits tab on 
+	the UI and responding to feedback from the user studies that we ran this week.
+
+Section 2: 
+	This week, I worked with the team to further develop the implementation of our project. 
+	Specifically, I worked on the front end UI, updating the files tab so that you can open
+	files directly by double clicking on them. I also prepared presentation slides and presented.
+	
+Section 3:
+	This coming week, I will continue working on the front end, filling out the commits tab on
+	the UI and updating any additional pieces that need to be fixed. Additionally, I will help
+	respond to the feedback received from the presentation, especially regarding git diff.
+	
+	
+	
