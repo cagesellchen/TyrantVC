@@ -38,9 +38,9 @@ If you don't see the TyrantVC plugin in the Plug-in Manager, you can perform the
 
 Note that you need the period at the end of the above command.
 
-You should restart Maya if it was open. Check that TyrantVC shows up in the Plug-in Manager, and that Loaded and Auto load are both checked ([see above for instructions on how to do this](#checking-that-it-worked)). 
+You should restart Maya if it was open. Check that TyrantVC shows up in the Plug-in Manager, and that *Loaded* and *Auto load* are both checked ([see above for instructions on how to do this](#checking-that-it-worked)). Checking (or unchecking and then checking) *Loaded* will open up the plugin.
 
-There should be a new tab in the shelves panel called TyrantVC. In that tab, click the first icon to open up the plugin. Instructions on what each element of that panel does and how to operate the plugin are listed below.
+Instructions on what each element of that panel does and how to operate the plugin are listed below.
 
   
 ## Using TyrantVC
