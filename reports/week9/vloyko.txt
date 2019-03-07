@@ -1,0 +1,16 @@
+Volodymyr Loyko
+CSE 403
+March 4th, 2019
+Individual Status Report
+
+Section 1:
+I need to draft up instructions for the user study and adjust the instructions for the windows machines in the animation labs. Along with that
+there are still features that I want to add, like being able to select which exact files we want to commit. Finally I need to run the user study and
+continue implementing features described in the report, such as being able to view history of the repo or individual files.
+  
+Section 2:
+This week I wrote instructions for the user study and ran it on three people in the labs. I also updated the installation script to be drag and
+droppable inside Maya. Finally I cleaned up git_access and git_access_tests and wrote more tests to fully cover our scripts.
+  
+Section 3:
+Next week I plan on running one more user study, writing more tests, specifically for confic_access and cleaning up the report for the final submission.
