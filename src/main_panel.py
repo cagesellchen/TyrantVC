@@ -55,63 +55,10 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
         files_tab_widget = QWidget()
         commits_tab_widget = QWidget()
 
-        # set up the file tab
+        # set up the files and commits tab
         self.make_files_tab(files_tab_widget)
+        self.make_commits_tab(commits_tab_widget)
 
-        # set up the commits tab
-        commits_layout = QVBoxLayout()
-        commits_list = QWidget()
-        commits_list_layout = QVBoxLayout()
-        
-        # proof of concept for commit UI
-        for i in range(12):
-            first_box = QFrame()
-            first_box.setFrameStyle(QFrame.StyledPanel)
-            first_box.setLineWidth(2)
-            first_box.setMaximumHeight(80)
-            first_box.setMaximumWidth(230)
-            
-            first_box_layout = QGridLayout()
-            label = QLabel()
-            label.setText('1:')
-            tf = label.font()
-            tf.setBold(True)
-            tf.setPixelSize(int(tf.pixelSize() * 1.5))
-            label.setFont(tf)
-            first_box_layout.addWidget(label, 0, 0)
-            
-            label2 = QLabel()
-            label2.setText('first 50 characters of commit message go here.....')
-            label2.setWordWrap(True)
-            tf = label2.font()
-            tf.setBold(True)
-            label2.setFont(tf)
-            first_box_layout.addWidget(label2, 0, 1)
-            
-            label3 = QLabel()
-            label3.setText('3/5/2019')
-            first_box_layout.addWidget(label3, 1, 0)
-            
-            label4 = QLabel()
-            label4.setText('6 files')
-            label4.setAlignment(Qt.AlignCenter)
-            first_box_layout.addWidget(label4, 1, 1)
-            
-            first_box.setLayout(first_box_layout)
-            
-            commits_list_layout.addWidget(first_box)
-            commits_list_layout.setAlignment(first_box, Qt.AlignTop)
-    
-        commits_list.setLayout(commits_list_layout)
-        
-        scroll_area = QScrollArea()
-        scroll_area.setWidget(commits_list)
-        scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-        scroll_area.setWidgetResizable(False)
-        
-        commits_layout.addWidget(scroll_area)
-        commits_tab_widget.setLayout(commits_layout)
-        
         # add both the tabs to the layout
         tab_widget.addTab(files_tab_widget, 'Files')
         tab_widget.addTab(commits_tab_widget, 'Commits')
@@ -127,16 +74,81 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
         # layout of the central_widget, and then attach central_widget to self.
         central_widget.setLayout(main_layout)
         self.setCentralWidget(central_widget)
-        
         self.setWindowTitle('TyrantVC')
-        
         self.setAttribute(Qt.WA_DeleteOnClose)   
+
+
+
+        ####################
+        ####################
+            #COMMITS TAB#     
+        ####################
+        ####################
+
+    def make_commits_tab(self, commits_tab_widget):
+        commits_layout = QVBoxLayout()
+        commits_list = QWidget()
+        commits_list_layout = QVBoxLayout()
+        
+        commit_data = git_access.get_all_commits()
+        print commit_data
+        # proof of concept for commit UI
+        for i in range(12):
+            print "a"
+            self.make_commit_box(commits_list_layout, '1', 'nah maaann', '3/6/2019', '6')
+           
+        commits_list.setLayout(commits_list_layout)
+        scroll_area = QScrollArea()
+        scroll_area.setWidget(commits_list)
+        scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        scroll_area.setWidgetResizable(False)
+        
+        commits_layout.addWidget(scroll_area)
+        commits_tab_widget.setLayout(commits_layout)
+        
+    def make_commit_box(self, commits_list_layout, number, message, date, num_files):
+        box = QFrame()
+        box.setFrameStyle(QFrame.StyledPanel)
+        box.setLineWidth(2)
+        box.setMaximumHeight(80)
+        box.setMaximumWidth(230)
+        
+        box_layout = QGridLayout()
+
+        label = QLabel()
+        label.setText(number + ':')
+        tf = label.font()
+        tf.setBold(True)
+        tf.setPixelSize(int(tf.pixelSize() * 1.5))
+        label.setFont(tf)
+        box_layout.addWidget(label, 0, 0)
+
+        label2 = QLabel()
+        label2.setText(message)
+        label2.setWordWrap(True)
+        tf = label2.font()
+        tf.setBold(True)
+        label2.setFont(tf)
+        box_layout.addWidget(label2, 0, 1)
+        
+        label3 = QLabel()
+        label3.setText(date)
+        box_layout.addWidget(label3, 1, 0)
+        label4 = QLabel()
+        label4.setText(num_files + ' files')
+        label4.setAlignment(Qt.AlignCenter)
+        box_layout.addWidget(label4, 1, 1)
+        box.setLayout(box_layout)
+        commits_list_layout.addWidget(box)
+        commits_list_layout.setAlignment(box, Qt.AlignTop)
 
 
 
 
         ####################
+        ####################
             #FILES TAB#     
+        ####################
         ####################
 
     # Creates the files tab in the given file_tab_widget
@@ -175,7 +187,7 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
         # just the file name and extension
         file_name = self.file_model.fileName(index)
         ext = None
-        if len(file_name.split) > 1:
+        if len(file_name.split('.')) > 1:
             ext = file_name.split('.')[1]
           
         # tries to select the tab with the given file name, if it finds it,
@@ -209,9 +221,11 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
     
 
 
-
-
-
+        ####################
+        ####################
+            #MAIN TAB#     
+        ####################
+        ####################
 
     # This should be called when the project list changes, and it fills the project button 
     # with the list of projects from the project_list, or if project_list has not been
@@ -235,10 +249,14 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
         # by default, we don't select any project    
         self.project_button.setText("No Project Selected")
     
+
+
     # Called upon clicking a project in the project_list. Sets the button text       
     def project_menu_item_clicked(self, item):           
         self.set_file_model_path(item[0], item[1])      
         git_access.create_repo(item[1])
+
+
     
     # Called upon clicking the create new project button. Opens a file dialog, adds the project
     # selected to the list, and opens that project.
@@ -267,8 +285,9 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
         self.set_file_model_path(project_name, res[0])
 
         git_access.create_repo(self.project_path)
-   
-      
+
+
+
     # Called upon clicking the commit button, should open up the staging area window
     def on_commit_btn_click(self):
         if (self.project_path == None):
@@ -283,6 +302,7 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
             self.staging_ui = stagingUI.main(self.project_path)
 
 
+
     # Calls MEL workspaceControl command to check if the given
     # control exists, and if it does, closes and deletes it
     def delete_control(self, name):
@@ -290,6 +310,8 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
             cmds.workspaceControl(name, e=True, close=True)
             cmds.deleteUI(name, control=True)
     
+
+
     # Deletes lingering instances of the panel and its workspace
     # control -- Maya can't have multiple panels with the same name up.
     def delete_instances(self):
