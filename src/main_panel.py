@@ -54,26 +54,12 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
         tab_widget = QTabWidget()
         files_tab_widget = QWidget()
         commits_tab_widget = QWidget()
-        
+
         # set up the file tab
-        file_layout = QVBoxLayout()
-        
-        # the file tab contains a TreeView, which is displaying a FileSystemModel.
-        # this FileSystemModel will display the files from a given root directory.
-        # to set the root directory of self.file_model, call self.file_model.setRootPath
-        # as well as self.file_tree.setRootIndex.
-        self.file_model = QFileSystemModel()
-        self.file_tree = QTreeView()
-        self.file_tree.setModel(self.file_model)
-        # attach a function to the file_tree so that if it is double clicked, we 
-        # can open the file that is selected.
-        self.file_tree.doubleClicked.connect(self.on_file_double_click)
-        file_layout.addWidget(self.file_tree)
-        files_tab_widget.setLayout(file_layout)
-        
+        self.make_files_tab(files_tab_widget)
+
         # set up the commits tab
         commits_layout = QVBoxLayout()
-        
         commits_list = QWidget()
         commits_list_layout = QVBoxLayout()
         
@@ -146,6 +132,39 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
         
         self.setAttribute(Qt.WA_DeleteOnClose)   
 
+
+
+
+        ####################
+            #FILES TAB#     
+        ####################
+
+    # Creates the files tab in the given file_tab_widget
+    def make_files_tab(self, files_tab_widget):
+        file_layout = QVBoxLayout()
+        # the file tab contains a TreeView, which is displaying a FileSystemModel.
+        # this FileSystemModel will display the files from a given root directory.
+        # to set the root directory of self.file_model, call self.file_model.setRootPath
+        # as well as self.file_tree.setRootIndex.
+        self.file_model = QFileSystemModel()
+        self.file_tree = QTreeView()
+        self.file_tree.setModel(self.file_model)
+        # attach a function to the file_tree so that if it is double clicked, we 
+        # can open the file that is selected.
+        self.file_tree.doubleClicked.connect(self.on_file_double_click)
+        file_layout.addWidget(self.file_tree)
+        files_tab_widget.setLayout(file_layout)
+
+    # Should be called whenever the file model view needs to change the folder it is looking at.
+    # name should be the name of the current project, and path should be the path to the directory.
+    # this function also updates the project_button.
+    def set_file_model_path(self, name, path):
+        self.project_name = name
+        self.project_path = path
+        self.file_model.setRootPath(path)
+        self.file_tree.setRootIndex(self.file_model.index(path))
+        self.project_button.setText(name)
+
     # Called when the file system model widget is double-clicked
     # and opens the appropriate file in script editor using mel commands.
     # If the file is already open in the script editor, it just selects that tab.
@@ -155,14 +174,15 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
         file_path = self.file_model.filePath(index)
         # just the file name and extension
         file_name = self.file_model.fileName(index)
-        ext = file_name.split('.')[1]
-        
+        ext = None
+        if len(file_name.split) > 1:
+            ext = file_name.split('.')[1]
+          
         # tries to select the tab with the given file name, if it finds it,
         # then it selects it and returns 1.
         res = mel.eval('selectExecuterTabByName(\"' + file_path + '\");')
         if res == 1:
             return  
-        
         # couldn't find the tab, so we need to make it
         tab_selected = False
         if ext == 'py':
@@ -179,14 +199,18 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
             # these commands will select the tab that we just created
             mel.eval('tabLayout -e -selectTabIndex `tabLayout -q -numberOfChildren $gCommandExecuterTabs` $gCommandExecuterTabs;')
             mel.eval('selectCurrentExecuterControl();')
-        
+
         # this command will fill the newly created tab with the contents of the given file    
         mel.eval('delegateCommandToFocusedExecuterWindow("-e -loadFile \\"' + file_path + '\\"", 0);')
-        
         # these commands will rename the tab to the file name, with the path as the tooltip hover
         mel.eval('renameCurrentExecuterTab(\"' + file_path + '\", 0);')
         mel.eval('delegateCommandToFocusedExecuterWindow "-e -modificationChangedCommand executerTabModificationChanged" 0;');
         mel.eval('delegateCommandToFocusedExecuterWindow "-e -fileChangedCommand executerTabFileChanged" 0;')
+    
+
+
+
+
 
 
     # This should be called when the project list changes, and it fills the project button 
@@ -244,18 +268,7 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
 
         git_access.create_repo(self.project_path)
    
-    # Should be called whenever the file model view needs to change the folder it is looking at.
-    # name should be the name of the current project, and path should be the path to the directory.
-    # this function also updates the project_button.
-    def set_file_model_path(self, name, path):
-        self.project_name = name
-        self.project_path = path
-        
-        self.file_model.setRootPath(path)
-        self.file_tree.setRootIndex(self.file_model.index(path))
-        
-        self.project_button.setText(name)
-                
+      
     # Called upon clicking the commit button, should open up the staging area window
     def on_commit_btn_click(self):
         if (self.project_path == None):
@@ -303,6 +316,8 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
         
         self.setDockableParameters(width=300)
         
+
+
 # main should be called in order to run mainPanel            
 def main():
     global mainPanel
@@ -310,6 +325,5 @@ def main():
     mainPanel.run()
     return mainPanel
     
-
 if __name__ == '__main__':
     main()
