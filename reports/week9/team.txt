@@ -1,0 +1,27 @@
+Week 9 Team Report - TyrantVC
+  
+1. What we planned to do last week:
+- We will continue to work on implementation:
+- Displaying scripts from previous commits, add settings/help, pop up warnings,
+- Commits tab, highlight modified files in file view, clicking file to view commit history
+- Incorporate feedback from user tests- clearer user manual, UI
+- Conduct more user tests
+
+2. What we did last week:
+- We again met as a team again to work on implementation
+- Ben fixed bugs with main_panel/stagingUI, added error messages, refactored main_panel
+- Carson added ability to open files directly, connected backend info to project panel
+- Annie worked on our final report and config_access
+- Vlad worked on the installer
+- Ben wrote the team status report, in fact, he's writing it right now.
+
+3. Next week:
+- We will continue to work on implementation:
+- Displaying scripts from previous commits, add settings/help
+- Commits tab, highlight modified files in file view, clicking file to view commit history
+- Conduct more user tests
+
+4.  Meeting agenda:
+- Go over accomplishments since last week
+- Discuss how to continue user tests- what types of things to test
+- Discuss which features to prioritize going forward
