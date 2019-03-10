@@ -33,7 +33,6 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
         self.staging_ui = None
         
         ### UI section
-        
         # we need a central widget because this panel is a DockableMixin, so it needs
         # a widget for us to attach a layout to
         central_widget = QWidget()
@@ -87,18 +86,11 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
     def make_commits_tab(self, commits_tab_widget):
         commits_layout = QVBoxLayout()
         commits_list = QWidget()
-        commits_list_layout = QVBoxLayout()
+        self.commits_list_layout = QVBoxLayout()
         
-        if self.project_name is not None:
-            commit_data = git_access.get_all_commits()
-            print commit_data
+        self.populate_commits_tab()
             
-        # proof of concept for commit UI
-        for i in range(12):
-            print "a"
-            self.make_commit_box(commits_list_layout, '1', 'nah maaann', '3/6/2019', '6')
-           
-        commits_list.setLayout(commits_list_layout)
+        commits_list.setLayout(self.commits_list_layout)
         self.commits_scroll_area = QScrollArea()
         self.commits_scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.commits_scroll_area.setWidgetResizable(True)
@@ -108,48 +100,77 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
         commits_tab_widget.setLayout(commits_layout)
     
     def populate_commits_tab(self):
+        # if the layout already exists, clean up the old one so we can replace it
+        if self.commits_list_layout is not None:
+            self.clear_commits_list_layout()
+                  
+        # if we have a project selected, then we should fill commits tab with its commits
         if self.project_name is not None:
             commit_data = git_access.get_all_commits()
-            print commit_data
+            # commit_data in the form of (commit_id, date, message, files)
+            for i, commit in enumerate(commit_data):
+                self.make_commit_box(str(len(commit_data) - i), commit[1], commit[2], str(len(commit[3])))
+            self.commits_list_layout.addStretch()
+           
+    def clear_commits_list_layout(self):
+        while self.commits_list_layout.count():
+            child = self.commits_list_layout.takeAt(0)
+            if child.widget():
+                child.widget().deleteLater()
         
-        
-    def make_commit_box(self, commits_list_layout, number, message, date, num_files):
+    def make_commit_box(self, number, date, message, num_files):
+        ## set up the box that contains the commit info
         box = QFrame()
         box.setFrameStyle(QFrame.StyledPanel)
         box.setLineWidth(2)
         box.setMaximumHeight(80)
         box.setMaximumWidth(230)
         
-        box_layout = QGridLayout()
+        ## layout setup, doing stacked HBoxes so that
+        ## we aren't restricted by a grid
+        box_layout = QVBoxLayout()
+        
+        first_row_layout = QHBoxLayout()
+        second_row_layout = QHBoxLayout()
 
-        label = QLabel()
-        label.setText(number + ':')
-        tf = label.font()
+        ## label containing the commit number
+        id_label = QLabel()
+        id_label.setText(number + ':')
+        tf = id_label.font()
         tf.setBold(True)
         tf.setPixelSize(int(tf.pixelSize() * 1.5))
-        label.setFont(tf)
-        box_layout.addWidget(label, 0, 0)
+        id_label.setFont(tf)
+        id_label.adjustSize()
+        first_row_layout.addWidget(id_label)
 
-        label2 = QLabel()
-        label2.setText(message)
-        label2.setWordWrap(True)
-        tf = label2.font()
+        ## label containing the commit message
+        message_label = QLabel()
+        message_label.setText(message)
+        message_label.setWordWrap(True)
+        tf = message_label.font()
         tf.setBold(True)
-        label2.setFont(tf)
-        box_layout.addWidget(label2, 0, 1)
+        message_label.setFont(tf)
+        message_label.adjustSize()
+        first_row_layout.addWidget(message_label)
         
-        label3 = QLabel()
-        label3.setText(date)
-        box_layout.addWidget(label3, 1, 0)
-        label4 = QLabel()
-        label4.setText(num_files + ' files')
-        label4.setAlignment(Qt.AlignCenter)
-        box_layout.addWidget(label4, 1, 1)
+        ## label containing the date
+        date_label = QLabel()
+        # put date in, cutting off the time zone
+        date_label.setText(' '.join(date.split(' ')[:-1]))
+        second_row_layout.addWidget(date_label)
+        
+        ## label containing the number of files
+        files_label = QLabel()
+        files_label.setText(num_files + ' files')
+        files_label.setAlignment(Qt.AlignCenter)
+        second_row_layout.addWidget(files_label)
+        
+        ## add everything to the box
+        box_layout.addLayout(first_row_layout)
+        box_layout.addLayout(second_row_layout)
         box.setLayout(box_layout)
-        commits_list_layout.addWidget(box)
-        commits_list_layout.setAlignment(box, Qt.AlignTop)
-
-
+        self.commits_list_layout.addWidget(box)
+        self.commits_list_layout.setAlignment(box, Qt.AlignTop)
 
 
     ####################
@@ -264,9 +285,9 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
 
     # Called upon clicking a project in the project_list. Sets the button text       
     def project_menu_item_clicked(self, item):           
-        self.set_file_model_path(item[0], item[1])
-        #self.populate_commits_tab()      
+        self.set_file_model_path(item[0], item[1])    
         git_access.create_repo(item[1])
+        self.populate_commits_tab() 
 
     
     # Called upon clicking the create new project button. Opens a file dialog, adds the project
@@ -296,6 +317,7 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
         self.set_file_model_path(project_name, res[0])
 
         git_access.create_repo(self.project_path)
+        self.populate_commits_tab()
 
 
     # Called upon clicking the commit button, should open up the staging area window

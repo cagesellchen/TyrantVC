@@ -81,7 +81,7 @@ def get_files_changed():
 
 # Returns the name of every file that was in a given commit
 def get_committed_files(commitId):
-    return subprocess.check_output("git diff-tree --no-commit-id --name-only -r " + commitId, startupinfo=si).split()
+    return subprocess.check_output("git diff-tree --no-commit-id --name-only --root -r " + commitId, startupinfo=si).split()
 
 
 
@@ -89,11 +89,13 @@ def get_committed_files(commitId):
 # date is in Date format; ex: 'Tue Mar 5 10:16:30 2019 -0800'
 # files is a list of files; ex: ['src/config_access.py', 'src/main_panel.py']
 def get_all_commits():
-    outlist = subprocess.check_output("git log --pretty=format:\"%H\\t%ad\\t%s\" -100", startupinfo=si).splitlines()
+    outlist = subprocess.check_output("git log --pretty=format:\"%H\t%ad\t%s\" -100", startupinfo=si).splitlines()
+
 
     data = []
     for line in outlist:
         lst = line.strip().split("\t")
         data.append((lst[0], lst[1], lst[2], get_committed_files(lst[0])))
+
 
     return data
