@@ -192,7 +192,7 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
             ext = file_name.split('.')[1]
           
         # opens the script editor
-        mel.eval('showScriptEditorPanel();')
+        mel.eval('ScriptEditor')
         # tries to select the tab with the given file name, if it finds it,
         # then it selects it and returns 1.
         res = mel.eval('selectExecuterTabByName(\"' + file_path + '\");')

@@ -37,20 +37,20 @@ def create_repo(reponame):
 def commit(filelist, message):
     subprocess.call("git add " + " ".join(filelist), shell=True)
     subprocess.call("git commit -m " + "\"" + message + "\"", shell=True)
-    commitId = subprocess.call("git rev-parse HEAD", shell=True).read().splitlines()[0]
+    commitId = subprocess.check_output("git rev-parse HEAD", shell=True).splitlines()[0]
     return commitId
 
 
 # This method returns the code for a specific version of a file
 # filename must be a path to the given file
 def get_file_version(commitId, filepath):
-    return subprocess.call("git show " + commitId + ":" + filepath, shell=True).read()
+    return subprocess.check_output("git show " + commitId + ":" + filepath, shell=True)
 
 # This method returns the name, date, and message of every commit
 # that modified a given file.
 # return data format: [[commit, date, message],[]...]
 def get_file_version_history(filename):
-    outlist = subprocess.call("git log --follow -- " + filename, shell=True).read().splitlines()
+    outlist = subprocess.check_output("git log --follow -- " + filename, shell=True).splitlines()
     outlist.append("")  # last commit entry doesn't have a blank line after it
                         # resulting in one less line than the other entries
 
@@ -66,21 +66,21 @@ def get_file_version_history(filename):
 # Method to see which files have been changed since the last commit.
 # returns a list of file names changed
 def get_files_changed():
-    outlist = subprocess.call("git diff --name-only", shell=True).read().splitlines()
-    outlist += subprocess.call("git ls-files --other --exclude-standard", shell=True).read().splitlines()
+    outlist = subprocess.check_output("git diff --name-only", shell=True).splitlines()
+    outlist += subprocess.check_output("git ls-files --other --exclude-standard", shell=True).splitlines()
     return outlist
 
 
 # Returns the name of every file that was in a given commit
 def get_committed_files(commitId):
-    return subprocess.call("git diff-tree --no-commit-id --name-only -r " + commitId, shell=True).read().split()
+    return subprocess.check_output("git diff-tree --no-commit-id --name-only -r " + commitId, shell=True).split()
 
 
 # Returns every commit in a tuple: (commit_id, date, message, files)
 # date is in Date format; ex: 'Tue Mar 5 10:16:30 2019 -0800'
 # files is a list of files; ex: ['src/config_access.py', 'src/main_panel.py']
 def get_all_commits():
-    outlist = subprocess.call("git log --pretty=format:\"%H\t%ad\t%s\" -100", shell=True).read().splitlines()
+    outlist = subprocess.check_output("git log --pretty=format:\"%H\t%ad\t%s\" -100", shell=True).splitlines()
 
     data = []
     for line in outlist:
