@@ -99,13 +99,19 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
             self.make_commit_box(commits_list_layout, '1', 'nah maaann', '3/6/2019', '6')
            
         commits_list.setLayout(commits_list_layout)
-        scroll_area = QScrollArea()
-        scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-        scroll_area.setWidgetResizable(True)
-        scroll_area.setWidget(commits_list)
+        self.commits_scroll_area = QScrollArea()
+        self.commits_scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.commits_scroll_area.setWidgetResizable(True)
+        self.commits_scroll_area.setWidget(commits_list)
         
-        commits_layout.addWidget(scroll_area)
+        commits_layout.addWidget(self.commits_scroll_area)
         commits_tab_widget.setLayout(commits_layout)
+    
+    def populate_commits_tab(self):
+        if self.project_name is not None:
+            commit_data = git_access.get_all_commits()
+            print commit_data
+        
         
     def make_commit_box(self, commits_list_layout, number, message, date, num_files):
         box = QFrame()
@@ -258,9 +264,9 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
 
     # Called upon clicking a project in the project_list. Sets the button text       
     def project_menu_item_clicked(self, item):           
-        self.set_file_model_path(item[0], item[1])      
+        self.set_file_model_path(item[0], item[1])
+        #self.populate_commits_tab()      
         git_access.create_repo(item[1])
-
 
     
     # Called upon clicking the create new project button. Opens a file dialog, adds the project
@@ -290,7 +296,6 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
         self.set_file_model_path(project_name, res[0])
 
         git_access.create_repo(self.project_path)
-
 
 
     # Called upon clicking the commit button, should open up the staging area window
