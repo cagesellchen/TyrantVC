@@ -15,9 +15,10 @@ class TyrantVCStagingUI(QMainWindow):
     # The name of the object for this panel, used to identify it by Maya
 
     
-    def __init__(self, project_name, file_list, parent=None):
+    def __init__(self, project_name, file_list, callback, parent=None):
        super(TyrantVCStagingUI, self).__init__(parent)
-  
+     
+       self.callback = callback
        self.setWindowTitle(project_name + ' Commit')
        central_widget = QWidget()
        main_layout = QVBoxLayout()
@@ -63,6 +64,7 @@ class TyrantVCStagingUI(QMainWindow):
                 cmds.warning("Select at least one file to commit")
             else:
                 git_access.commit(commit_list, self.commit_msg.toPlainText())
+                self.callback()
                 self.delete_instances()
             
     # Sets up the panel and displays it. Should be called after creation
@@ -73,11 +75,12 @@ class TyrantVCStagingUI(QMainWindow):
     def delete_instances(self):     
         self.close()
 
-def main(project_path):
+def main(project_path, callback):
     # Create staging UI
     global staging_ui
     staging_ui = TyrantVCStagingUI(project_name = project_path,
         file_list = git_access.get_files_changed(),
+        callback = callback,
         parent=get_main_window())
     staging_ui.run()
     return staging_ui

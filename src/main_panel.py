@@ -83,6 +83,7 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
     ####################
     ####################
 
+    # Sets up the commits tab, should only be called once when setting up the UI
     def make_commits_tab(self, commits_tab_widget):
         commits_layout = QVBoxLayout()
         commits_list = QWidget()
@@ -99,6 +100,9 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
         commits_layout.addWidget(self.commits_scroll_area)
         commits_tab_widget.setLayout(commits_layout)
     
+    # Gets the commit information for the current repo and fills the commits tab
+    # with the appropriate info for each commit. Should be called whenever the repo
+    # changes, or when going back from the files list
     def populate_commits_tab(self):
         # if the layout already exists, clean up the old one so we can replace it
         if self.commits_list_layout is not None:
@@ -109,16 +113,31 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
             commit_data = git_access.get_all_commits()
             # commit_data in the form of (commit_id, date, message, files)
             for i, commit in enumerate(commit_data):
-                self.make_commit_box(str(len(commit_data) - i), commit[1], commit[2], str(len(commit[3])))
+                self.make_commit_box(str(len(commit_data) - i), commit)
+            # addStretch() makes sure the frames sit at the top instead of stretching down
             self.commits_list_layout.addStretch()
-           
+            # layout().update() makes sure the UI updates -- Maya has a bug with dockable panels not updating
+            self.layout().update()
+
+    # Removes everything currently in the commits list. Should be called
+    # before populating the commits list (either with files or with a new commit list)           
     def clear_commits_list_layout(self):
+        # takeAt(0) will remove the first from the layout, pushing the rest up.
+        # we can continue doing that until there are none left
         while self.commits_list_layout.count():
             child = self.commits_list_layout.takeAt(0)
             if child.widget():
                 child.widget().deleteLater()
+    
+    # Puts a commit box for the provided number and commit in the
+    # commits_list_layout. Should be called whenever populating the
+    # commits list    
+    def make_commit_box(self, number, commit):
+        # assign commit fields to variables for readability
+        date = commit[1]
+        message = commit[2]
+        num_files = str(len(commit[3]))
         
-    def make_commit_box(self, number, date, message, num_files):
         ## set up the box that contains the commit info
         box = QFrame()
         box.setFrameStyle(QFrame.StyledPanel)
@@ -134,36 +153,19 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
         second_row_layout = QHBoxLayout()
 
         ## label containing the commit number
-        id_label = QLabel()
-        id_label.setText(number + ':')
-        tf = id_label.font()
-        tf.setBold(True)
-        tf.setPixelSize(int(tf.pixelSize() * 1.5))
-        id_label.setFont(tf)
-        id_label.adjustSize()
-        first_row_layout.addWidget(id_label)
+        first_row_layout.addWidget(self.get_commit_id_label(number))
 
         ## label containing the commit message
-        message_label = QLabel()
-        message_label.setText(message)
-        message_label.setWordWrap(True)
-        tf = message_label.font()
-        tf.setBold(True)
-        message_label.setFont(tf)
-        message_label.adjustSize()
-        first_row_layout.addWidget(message_label)
+        first_row_layout.addWidget(self.get_commit_message_label(message))
         
         ## label containing the date
-        date_label = QLabel()
-        # put date in, cutting off the time zone
-        date_label.setText(' '.join(date.split(' ')[:-1]))
-        second_row_layout.addWidget(date_label)
+        second_row_layout.addWidget(self.get_commit_date_label(date))
         
-        ## label containing the number of files
-        files_label = QLabel()
-        files_label.setText(num_files + ' files')
-        files_label.setAlignment(Qt.AlignCenter)
-        second_row_layout.addWidget(files_label)
+        ## button containing the number of files
+        files_btn = QPushButton()
+        files_btn.setText(num_files + (' file' if num_files is '1' else ' files'))
+        files_btn.clicked.connect(lambda c=commit, n=number: self.on_commit_file_btn_click(number, c))
+        second_row_layout.addWidget(files_btn)
         
         ## add everything to the box
         box_layout.addLayout(first_row_layout)
@@ -172,6 +174,131 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
         self.commits_list_layout.addWidget(box)
         self.commits_list_layout.setAlignment(box, Qt.AlignTop)
 
+    # Called when user clicks the button associated with a certain commit in the commits tab
+    # commit is in the form (commit_id, date, message, files)
+    def on_commit_file_btn_click(self, number, commit):
+        commit_id = commit[0]
+        date = commit[1]
+        message = commit[2]
+        files = commit[3]
+        
+        self.clear_commits_list_layout()
+        
+        ## set up the frame
+        box = QFrame()
+        box.setFrameStyle(QFrame.StyledPanel)
+        box.setLineWidth(2)
+        box.setMaximumHeight(80)
+        box.setMaximumWidth(230)
+        
+        box_layout = QVBoxLayout()
+        first_row_layout = QHBoxLayout()
+        
+        ## back button, to return to the commits list
+        back_button = QPushButton()
+        back_button.setText('Back')
+        back_button.clicked.connect(self.populate_commits_tab)
+        first_row_layout.addWidget(back_button)
+        
+        ## calls helper functions to add the ID and the commit message
+        first_row_layout.addWidget(self.get_commit_id_label(number))
+        first_row_layout.addWidget(self.get_commit_message_label(message))
+        
+        box_layout.addLayout(first_row_layout)
+        
+        ## the date
+        box_layout.addWidget(self.get_commit_date_label(date))
+        
+        box.setLayout(box_layout)
+        
+        self.commits_list_layout.addWidget(box)
+        
+        ## for every file in this commit, add a commit_file_box to the layout
+        for filename in files:
+            self.make_commit_file_box(filename, commit_id)
+        
+        # addStretch() makes sure the frames sit at the top instead of stretching down
+        self.commits_list_layout.addStretch()
+        # layout().update() makes sure the UI updates -- Maya has a bug with dockable panels not updating
+        self.layout().update()
+    
+    # Creates a single box that provides a filename and buttons to open the
+    # file and the diff, and adds it to commits_list_layout
+    def make_commit_file_box(self, filename, commit_id):
+        ## set up the frame
+        box = QFrame()
+        box.setFrameStyle(QFrame.StyledPanel)
+        box.setLineWidth(2)
+        box.setMaximumHeight(80)
+        box.setMaximumWidth(230)
+        
+        box_layout = QVBoxLayout()
+        
+        ## the filename label
+        filename_label = QLabel()
+        filename_label.setText(filename)
+        box_layout.addWidget(filename_label)
+        
+        ## the two buttons, one that lets you view the file and one that views changes
+        button_layout = QHBoxLayout()
+        
+        view_file_button = QPushButton()
+        view_file_button.setText('View File')
+        view_file_button.clicked.connect(lambda f=filename,c=commit_id: self.show_file(f, c))
+        button_layout.addWidget(view_file_button)
+        
+        view_changes_button = QPushButton()
+        view_changes_button.setText('View Changes')
+        view_changes_button.clicked.connect(lambda f=filename,c=commit_id: self.show_diff(f, c))
+        button_layout.addWidget(view_changes_button)
+        
+        ## add everything to the layout
+        box_layout.addLayout(button_layout)
+        box.setLayout(box_layout)
+        self.commits_list_layout.addWidget(box)
+    
+    # Called when the suer clicks the "View File" button for a file in commit history,
+    # and will open a new window with the post-commit version for that file from that commit 
+    def show_file(self, filename, commit_id):
+        file = git_access.get_file_version(commit_id, filename)
+        # TODO: pop up with a new window that has the file info in it
+        print(file)
+    
+    # Called when the user clicks the "View Changes" button for a file in commit history,
+    # and will open a new window with the diff for that file from that commit  
+    def show_diff(self, filename, commit_id):
+        # TODO: add a git_access method that returns the diff 
+        # TODO: pop up with a new window that has the diff in it
+        print(filename)
+    
+    # Helper method that returns a label with the given commit id in the proper format    
+    def get_commit_id_label(self, number):
+        id_label = QLabel()
+        id_label.setText(number + ':')
+        tf = id_label.font()
+        tf.setBold(True)
+        tf.setPixelSize(int(tf.pixelSize() * 1.5))
+        id_label.setFont(tf)
+        id_label.adjustSize()
+        return id_label
+        
+    # Helper method that returns a label with the given commit message in the proper format        
+    def get_commit_message_label(self, message):
+        message_label = QLabel()
+        message_label.setText(message)
+        message_label.setWordWrap(True)
+        tf = message_label.font()
+        tf.setBold(True)
+        message_label.setFont(tf)
+        message_label.adjustSize()
+        return message_label
+    
+    # Helper method that returns a label with the given commit date in the proper format 
+    def get_commit_date_label(self, date):    
+        date_label = QLabel()
+        # put date in, cutting off the time zone
+        date_label.setText(' '.join(date.split(' ')[:-1]))
+        return date_label
 
     ####################
     ####################
@@ -331,7 +458,7 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
                 # if a staging ui already exits, close it, then make a new one.
                 self.staging_ui.delete_instances()
                 self.staging_ui = None
-            self.staging_ui = stagingUI.main(self.project_path)
+            self.staging_ui = stagingUI.main(self.project_path, self.populate_commits_tab)
 
 
 
@@ -369,13 +496,12 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
         self.raise_()
         
         self.setDockableParameters(width=300)
-        
-
 
 # main should be called in order to run mainPanel            
 def main():
     global mainPanel
-    mainPanel = TyrantVCMainPanel(parent=get_main_window())
+    main_window = get_main_window()  
+    mainPanel = TyrantVCMainPanel(parent=main_window)
     mainPanel.run()
     return mainPanel
     
