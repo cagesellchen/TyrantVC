@@ -78,20 +78,21 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
         self.setAttribute(Qt.WA_DeleteOnClose)   
 
 
-
-        ####################
-        ####################
-            #COMMITS TAB#     
-        ####################
-        ####################
+    ####################
+    ####################
+        #COMMITS TAB#     
+    ####################
+    ####################
 
     def make_commits_tab(self, commits_tab_widget):
         commits_layout = QVBoxLayout()
         commits_list = QWidget()
         commits_list_layout = QVBoxLayout()
         
-        commit_data = git_access.get_all_commits()
-        print commit_data
+        if self.project_name is not None:
+            commit_data = git_access.get_all_commits()
+            print commit_data
+            
         # proof of concept for commit UI
         for i in range(12):
             print "a"
@@ -99,9 +100,9 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
            
         commits_list.setLayout(commits_list_layout)
         scroll_area = QScrollArea()
-        scroll_area.setWidget(commits_list)
         scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-        scroll_area.setWidgetResizable(False)
+        scroll_area.setWidgetResizable(True)
+        scroll_area.setWidget(commits_list)
         
         commits_layout.addWidget(scroll_area)
         commits_tab_widget.setLayout(commits_layout)
@@ -145,11 +146,11 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
 
 
 
-        ####################
-        ####################
-            #FILES TAB#     
-        ####################
-        ####################
+    ####################
+    ####################
+        #FILES TAB#     
+    ####################
+    ####################
 
     # Creates the files tab in the given file_tab_widget
     def make_files_tab(self, files_tab_widget):
@@ -190,6 +191,8 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
         if len(file_name.split('.')) > 1:
             ext = file_name.split('.')[1]
           
+        # opens the script editor
+        mel.eval('showScriptEditorPanel();')
         # tries to select the tab with the given file name, if it finds it,
         # then it selects it and returns 1.
         res = mel.eval('selectExecuterTabByName(\"' + file_path + '\");')
@@ -197,6 +200,7 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
             return  
         # couldn't find the tab, so we need to make it
         tab_selected = False
+
         if ext == 'py':
             mel.eval('buildNewExecuterTab(-1, "Python", "python", 0);')
         elif ext == 'mel':
@@ -204,6 +208,7 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
         else:
             tab_selected = True
             mel.eval('addNewExecuterTab("", 0);')
+
         
         # if it was not a python or mel file, we didn't build it, and addExecutorTab
         # already selected it. 
@@ -221,11 +226,11 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
     
 
 
-        ####################
-        ####################
-            #MAIN TAB#     
-        ####################
-        ####################
+    ####################
+    ####################
+        #MAIN TAB#     
+    ####################
+    ####################
 
     # This should be called when the project list changes, and it fills the project button 
     # with the list of projects from the project_list, or if project_list has not been

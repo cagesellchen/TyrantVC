@@ -28,7 +28,6 @@ def parse_config():
 
     return tuple_list
 
-
 # This method adds a repo and path to the config.txt file.
 # If the file does not already exist, it creates it.
 # repo_name is the name of the repo
