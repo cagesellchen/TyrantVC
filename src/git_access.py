@@ -2,9 +2,6 @@ import os
 import subprocess
 import platform
 
-# Defining startup behavior for the subprocess, this will 
-# hide the window that the commands are executed in
-opsys = platform.system()
 
 # Creates a new repo or loads an existing repo from an existing folder
 # return 0 if successfully created a repo
@@ -110,7 +107,9 @@ def get_all_commits():
 # 'is_call' parameter is true if you want to use subprocess.call,
 #       vs false if you want to use subprocess.check_output
 def run_os_dependent_command(command, is_call=False):
-    if opsys == "Windows":
+    if platform.system() == "Windows":
+        # Defining startup behavior for the subprocess, this will
+        # hide the window that the commands are executed in
         si = subprocess.STARTUPINFO()
         si.dwFlags |= subprocess.STARTF_USESHOWWINDOW
 
