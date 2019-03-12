@@ -56,7 +56,7 @@ class git_access_test(unittest.TestCase):
 
     # test whether a repo can successfully be created from a nonrepo folder with no files
     def test_create_repo_empty_folder_not_repo(self):
-        self.assertEqual(git_access.create_repo(self.basedir + "/" + self.empty_reponame), 1)
+        self.assertEqual(git_access.create_repo(self.basedir + "/" + self.empty_reponame), 0)
 
     # test whether a repo can successfully be created from a repo folder with no files
     def test_create_repo_empty_folder_is_repo(self):
