@@ -1,0 +1,15 @@
+Ben Celsi
+CSE 403
+Mar 11
+Weekly Status Report
+
+Section 1:
+Next week, I will work on the commit tab, incorporate our config file into the frontend, and separate the file tab and commit tab into 2 separate classes.
+
+Section 2:
+Last week, I made our team report and feedback for Proj 7.  I didn't split the commit and file tabs into separate classes, but I did refactor them within main_panel.py
+
+
+Section 3:
+Next week, I will work on finalizing our report.  We have a few 'nice to have' features that I might work on as well- allowing adding/deleting files/folders from the filetab, 
+opening a commit list from the file tab, reformatting the ui of the commit tab are all possible. We can go over this in the meeting on Thursday.
