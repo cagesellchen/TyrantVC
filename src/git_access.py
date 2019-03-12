@@ -52,8 +52,8 @@ def commit(filelist, message):
 
 # This method returns the code for a specific version of a file
 # filename must be a path to the given file
-def get_file_version(commitId, filepath):
-    return run_os_dependent_command("git show " + commitId + ":" + filepath)
+def get_file_version(commit_id, filepath):
+    return run_os_dependent_command("git show " + commit_id + ":" + filepath)
 
 # This method returns the name, date, and message of every commit
 # that modified a given file.
@@ -100,6 +100,13 @@ def get_all_commits():
         data.append((lst[0], lst[1], lst[2], get_committed_files(lst[0])))
 
     return data
+
+# Returns a diff between an old file and the current one
+def get_diff(commit_id, filename):
+    diff = run_os_dependent_command("git diff " + commit_id + " " + filename)
+    if diff == "":
+        return filename + " from commit " + commit_id + " is the same as the current version"
+    return diff
 
 
 # returns the proper call for a command based on the user's OS

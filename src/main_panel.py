@@ -257,7 +257,7 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
         box.setLayout(box_layout)
         self.commits_list_layout.addWidget(box)
     
-    # Called when the suer clicks the "View File" button for a file in commit history,
+    # Called when the user clicks the "View File" button for a file in commit history,
     # and will open a new window with the post-commit version for that file from that commit 
     def show_file(self, filename, commit_id):
         file = git_access.get_file_version(commit_id, filename)
@@ -267,9 +267,9 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
     # Called when the user clicks the "View Changes" button for a file in commit history,
     # and will open a new window with the diff for that file from that commit  
     def show_diff(self, filename, commit_id):
-        # TODO: add a git_access method that returns the diff 
+        file = git_access.get_diff(commit_id, filename)
         # TODO: pop up with a new window that has the diff in it
-        print(filename)
+        print(file)
     
     # Helper method that returns a label with the given commit id in the proper format    
     def get_commit_id_label(self, number):
