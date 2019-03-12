@@ -10,6 +10,7 @@ import re
 import git_access
 import config_access
 import stagingUI
+import text_viewer_UI
 
 # Returns the main maya window
 def get_main_window():
@@ -31,6 +32,7 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
         
         ### Panels
         self.staging_ui = None
+        self.text_viewer = None
         
         ### UI section
         # we need a central widget because this panel is a DockableMixin, so it needs
@@ -261,15 +263,22 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
     # and will open a new window with the post-commit version for that file from that commit 
     def show_file(self, filename, commit_id):
         file = git_access.get_file_version(commit_id, filename)
-        # TODO: pop up with a new window that has the file info in it
-        print(file)
+        if (self.text_viewer != None):
+            # if a text viewer ui already exits, close it, then make a new one.
+            self.text_viewer.delete_instances()
+            self.text_viewer = None
+        self.text_viewer = text_viewer_UI.main(filename, file, None)
+
     
     # Called when the user clicks the "View Changes" button for a file in commit history,
     # and will open a new window with the diff for that file from that commit  
     def show_diff(self, filename, commit_id):
-        file = git_access.get_diff(commit_id, filename)
-        # TODO: pop up with a new window that has the diff in it
-        print(file)
+        diff = git_access.get_diff(commit_id, filename)
+        if (self.text_viewer != None):
+            # if a text viewer ui already exits, close it, then make a new one.
+            self.text_viewer.delete_instances()
+            self.text_viewer = None
+        self.text_viewer = text_viewer_UI.main(filename + " Diff ", diff, None)
     
     # Helper method that returns a label with the given commit id in the proper format    
     def get_commit_id_label(self, number):
