@@ -9,10 +9,9 @@ def get_main_window():
     main_window_ptr = omui.MQtUtil.mainWindow()
     return wrapInstance(long(main_window_ptr), QWidget)
 
-
+# When created, this class opens a popup window which displays text
 class TyrantVCTextViewerPanel(QMainWindow):
-    # The name of the object for this panel, used to identify it by Maya
-
+   
     def __init__(self, window_title, text_to_display, callback, parent=None):
         super(TyrantVCTextViewerPanel, self).__init__(parent)
 
@@ -27,6 +26,7 @@ class TyrantVCTextViewerPanel(QMainWindow):
         self.text_viewer.setReadOnly(True)
         main_layout.addWidget(self.text_viewer)
 
+        # Apply the layout to the central widget
         central_widget.setLayout(main_layout)
         self.setCentralWidget(central_widget)
 
@@ -35,6 +35,7 @@ class TyrantVCTextViewerPanel(QMainWindow):
         self.show()
         self.raise_()
 
+    # Deletes instances of this
     def delete_instances(self):
         self.close()
 
@@ -49,6 +50,6 @@ def main(window_title, text_to_display, callback):
     text_viewer.run()
     return text_viewer
 
-
+# This is called if text_viewer_UI is run on its own 
 if __name__ == '__main__':
     main("")

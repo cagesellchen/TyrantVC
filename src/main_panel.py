@@ -9,15 +9,14 @@ from shiboken2 import wrapInstance
 import re
 import git_access
 import config_access
-import stagingUI
+import staging_UI
 import text_viewer_UI
 
 # Returns the main maya window
 def get_main_window():
     main_window_ptr = omui.MQtUtil.mainWindow()
     return wrapInstance(long(main_window_ptr), QWidget)
-    
-#TODO: Split into FileBrowserUI and CommitBrowserUI
+
 class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
     # The name of the object for this panel, used to identify it by Maya
     OBJECT_NAME = 'TyrantVCMainPanel'
@@ -25,9 +24,7 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
     WORKSPACE_NAME = OBJECT_NAME + 'WorkspaceControl'
     
     def __init__(self, parent=None):
-        print "__init__"
         self.delete_instances()
-        
         super(TyrantVCMainPanel, self).__init__(parent)
         
         ### Panels
@@ -66,8 +63,7 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
         main_layout.addWidget(tab_widget)
         
         # commit button at the bottom of the panel
-        self.commit_btn = QPushButton()
-        self.commit_btn.setText('Commit')
+        self.commit_btn = QPushButton('Commit')
         self.commit_btn.clicked.connect(self.on_commit_btn_click)
         main_layout.addWidget(self.commit_btn)
         
@@ -77,6 +73,7 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
         self.setCentralWidget(central_widget)
         self.setWindowTitle('TyrantVC')
         self.setAttribute(Qt.WA_DeleteOnClose)   
+
 
 
     ####################
@@ -101,6 +98,7 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
         
         commits_layout.addWidget(self.commits_scroll_area)
         commits_tab_widget.setLayout(commits_layout)
+
     
     # Gets the commit information for the current repo and fills the commits tab
     # with the appropriate info for each commit. Should be called whenever the repo
@@ -121,6 +119,7 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
             # layout().update() makes sure the UI updates -- Maya has a bug with dockable panels not updating
             self.layout().update()
 
+
     # Removes everything currently in the commits list. Should be called
     # before populating the commits list (either with files or with a new commit list)           
     def clear_commits_list_layout(self):
@@ -131,6 +130,7 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
             if child.widget():
                 child.widget().deleteLater()
     
+
     # Puts a commit box for the provided number and commit in the
     # commits_list_layout. Should be called whenever populating the
     # commits list    
@@ -141,31 +141,23 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
         num_files = str(len(commit[3]))
         
         ## set up the box that contains the commit info
-        box = QFrame()
-        box.setFrameStyle(QFrame.StyledPanel)
-        box.setLineWidth(2)
-        box.setMaximumHeight(80)
-        box.setMaximumWidth(230)
+        box = self.get_default_box()
         
         ## layout setup, doing stacked HBoxes so that
         ## we aren't restricted by a grid
         box_layout = QVBoxLayout()
-        
         first_row_layout = QHBoxLayout()
         second_row_layout = QHBoxLayout()
 
         ## label containing the commit number
         first_row_layout.addWidget(self.get_commit_id_label(number))
-
         ## label containing the commit message
         first_row_layout.addWidget(self.get_commit_message_label(message))
-        
         ## label containing the date
         second_row_layout.addWidget(self.get_commit_date_label(date))
         
         ## button containing the number of files
-        files_btn = QPushButton()
-        files_btn.setText(num_files + (' file' if num_files is '1' else ' files'))
+        files_btn = QPushButton(num_files + (' file' if num_files is '1' else ' files'))
         files_btn.clicked.connect(lambda c=commit, n=number: self.on_commit_file_btn_click(number, c))
         second_row_layout.addWidget(files_btn)
         
@@ -175,6 +167,7 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
         box.setLayout(box_layout)
         self.commits_list_layout.addWidget(box)
         self.commits_list_layout.setAlignment(box, Qt.AlignTop)
+
 
     # Called when user clicks the button associated with a certain commit in the commits tab
     # commit is in the form (commit_id, date, message, files)
@@ -187,32 +180,24 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
         self.clear_commits_list_layout()
         
         ## set up the frame
-        box = QFrame()
-        box.setFrameStyle(QFrame.StyledPanel)
-        box.setLineWidth(2)
-        box.setMaximumHeight(80)
-        box.setMaximumWidth(230)
-        
+        box = self.get_default_box()
         box_layout = QVBoxLayout()
         first_row_layout = QHBoxLayout()
         
         ## back button, to return to the commits list
-        back_button = QPushButton()
-        back_button.setText('Back')
+        back_button = QPushButton('Back')
         back_button.clicked.connect(self.populate_commits_tab)
         first_row_layout.addWidget(back_button)
         
         ## calls helper functions to add the ID and the commit message
         first_row_layout.addWidget(self.get_commit_id_label(number))
         first_row_layout.addWidget(self.get_commit_message_label(message))
-        
         box_layout.addLayout(first_row_layout)
         
         ## the date
         box_layout.addWidget(self.get_commit_date_label(date))
-        
+
         box.setLayout(box_layout)
-        
         self.commits_list_layout.addWidget(box)
         
         ## for every file in this commit, add a commit_file_box to the layout
@@ -224,33 +209,27 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
         # layout().update() makes sure the UI updates -- Maya has a bug with dockable panels not updating
         self.layout().update()
     
+
     # Creates a single box that provides a filename and buttons to open the
     # file and the diff, and adds it to commits_list_layout
     def make_commit_file_box(self, filename, commit_id):
         ## set up the frame
-        box = QFrame()
-        box.setFrameStyle(QFrame.StyledPanel)
-        box.setLineWidth(2)
-        box.setMaximumHeight(80)
-        box.setMaximumWidth(230)
+        box = self.get_default_box()
         
         box_layout = QVBoxLayout()
         
         ## the filename label
-        filename_label = QLabel()
-        filename_label.setText(filename)
+        filename_label = QLabel(filename)
         box_layout.addWidget(filename_label)
         
         ## the two buttons, one that lets you view the file and one that views changes
         button_layout = QHBoxLayout()
         
-        view_file_button = QPushButton()
-        view_file_button.setText('View File')
+        view_file_button = QPushButton('View File')
         view_file_button.clicked.connect(lambda f=filename,c=commit_id: self.show_file(f, c))
         button_layout.addWidget(view_file_button)
         
-        view_changes_button = QPushButton()
-        view_changes_button.setText('View Changes')
+        view_changes_button = QPushButton('View Changes')
         view_changes_button.clicked.connect(lambda f=filename,c=commit_id: self.show_diff(f, c))
         button_layout.addWidget(view_changes_button)
         
@@ -258,7 +237,8 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
         box_layout.addLayout(button_layout)
         box.setLayout(box_layout)
         self.commits_list_layout.addWidget(box)
-    
+
+
     # Called when the user clicks the "View File" button for a file in commit history,
     # and will open a new window with the post-commit version for that file from that commit 
     def show_file(self, filename, commit_id):
@@ -280,21 +260,20 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
             self.text_viewer = None
         self.text_viewer = text_viewer_UI.main(filename + " Diff ", diff, None)
     
+
     # Helper method that returns a label with the given commit id in the proper format    
     def get_commit_id_label(self, number):
-        id_label = QLabel()
-        id_label.setText(number + ':')
+        id_label = QLabel(number + ':')
         tf = id_label.font()
         tf.setBold(True)
         tf.setPixelSize(int(tf.pixelSize() * 1.5))
         id_label.setFont(tf)
         id_label.adjustSize()
         return id_label
-        
+    
     # Helper method that returns a label with the given commit message in the proper format        
     def get_commit_message_label(self, message):
-        message_label = QLabel()
-        message_label.setText(message)
+        message_label = QLabel(message)
         message_label.setWordWrap(True)
         tf = message_label.font()
         tf.setBold(True)
@@ -304,10 +283,21 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
     
     # Helper method that returns a label with the given commit date in the proper format 
     def get_commit_date_label(self, date):    
-        date_label = QLabel()
+        date_label = QLabel(' '.join(date.split(' ')[:-1]))
         # put date in, cutting off the time zone
-        date_label.setText(' '.join(date.split(' ')[:-1]))
         return date_label
+
+
+    # Helper method that returns a typical sized box used by our UI
+    def get_default_box(self):
+        box = QFrame()
+        box.setFrameStyle(QFrame.StyledPanel)
+        box.setLineWidth(2)
+        box.setMaximumHeight(80)
+        box.setMaximumWidth(230)
+        return box
+
+
 
     ####################
     ####################
@@ -331,6 +321,7 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
         file_layout.addWidget(self.file_tree)
         files_tab_widget.setLayout(file_layout)
 
+
     # Should be called whenever the file model view needs to change the folder it is looking at.
     # name should be the name of the current project, and path should be the path to the directory.
     # this function also updates the project_button.
@@ -350,6 +341,7 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
         file_path = self.file_model.filePath(index)
         # just the file name and extension
         file_name = self.file_model.fileName(index)
+        
         ext = None
         if len(file_name.split('.')) > 1:
             ext = file_name.split('.')[1]
@@ -391,7 +383,7 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
 
     ####################
     ####################
-        #MAIN TAB#     
+        #MAIN PANEL#     
     ####################
     ####################
 
@@ -399,6 +391,7 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
     # with the list of projects from the project_list, or if project_list has not been
     # filled, it fills it from the config file
     def populate_project_menu(self):
+        # Clear existing projects
         self.project_menu.clear() 
         
         # call config_access to get a list if we don't have one yet. after that we
@@ -418,7 +411,6 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
         self.project_button.setText("No Project Selected")
     
 
-
     # Called upon clicking a project in the project_list. Sets the button text       
     def project_menu_item_clicked(self, item):           
         self.set_file_model_path(item[0], item[1])    
@@ -434,7 +426,6 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
         if res is None:
             # they cancelled the file picker
             return
-        
         # get the last thing after a / or a \, which is the name of the directory
         project_name = re.split(r'[/\\]', res[0])[-1]
         # check to make sure a project with the same name doesn't already exist (this is not allowed)
@@ -442,16 +433,12 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
             if (item[0] == project_name):
                cmds.warning("A project with name '" + item[0] + "' already exisits")
                return
-            #    PySide.QtGui.QMessageBox QStatusBar.showMessage("Error: a project of this name already exists")
-            #    return
         
         # add the new project to the list and re-populate    
         self.project_list.append((project_name, res[0]))
         config_access.add_config(project_name, res[0])
         self.populate_project_menu()
-        
         self.set_file_model_path(project_name, res[0])
-
         git_access.create_repo(self.project_path)
         self.populate_commits_tab()
 
@@ -467,8 +454,7 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
                 # if a staging ui already exits, close it, then make a new one.
                 self.staging_ui.delete_instances()
                 self.staging_ui = None
-            self.staging_ui = stagingUI.main(self.project_path, self.populate_commits_tab)
-
+            self.staging_ui = staging_UI.main(self.project_path, self.populate_commits_tab)
 
 
     # Calls MEL workspaceControl command to check if the given
@@ -479,22 +465,12 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
             cmds.deleteUI(name, control=True)
     
 
-
     # Deletes lingering instances of the panel and its workspace
     # control -- Maya can't have multiple panels with the same name up.
     def delete_instances(self):
-        # For now since we're docking automatically, it looks like we don't
-        # need this cleanup step, we just need to delete the control.
-        # However, we should keep this code around in case we change things
-        # and end up needing it.
-        
-        #for obj in get_main_window().children():
-        #    if(obj.__class__.__name__ == self.OBJECT_NAME):
-        #        obj.setParent(None)
-        #        obj.deleteLater()
-                
         self.delete_control(self.WORKSPACE_NAME)
     
+
     # Sets up the panel and displays it. Should be called after creation        
     def run(self):
         self.setObjectName(self.OBJECT_NAME)
@@ -505,6 +481,7 @@ class TyrantVCMainPanel(MayaQWidgetDockableMixin, QMainWindow):
         self.raise_()
         
         self.setDockableParameters(width=300)
+
 
 # main should be called in order to run mainPanel            
 def main():
