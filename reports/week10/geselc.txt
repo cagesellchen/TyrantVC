@@ -1,0 +1,13 @@
+Annie Gesellchen
+CSE 403
+Feb 25th
+Weekly Status Report
+
+Section 1 (From last week):
+This coming week, I will help test config_access.py, and continue upgrading our user manual. I will also help the frontend team work on the UI for our plugin, and help integrate the backend files with the frontend code.
+
+Section 2 (What I accomplished last week):
+This past week, I mainly helped the frontend team work on the UI for our plugin. This included adding a diff method to git_access, creating a popup panel that displays text, using that panel to display past versions of a given file when "View file" is clicked, using the panel to display the diff of a given file with the current version, and modifying git_access to work on a Mac.
+
+Section 3 (Next week):
+Our team is mostly done with the plugin. This coming week is about finalizing our report and finishing up the final touches of our plugin. We will also prepare our final presentation.

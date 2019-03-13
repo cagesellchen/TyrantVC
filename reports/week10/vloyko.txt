@@ -1,0 +1,18 @@
+Volodymyr Loyko
+CSE 403
+March 11th, 2019
+Individual Status Report
+
+Section 1:
+Next week I plan on running one more user study, writing more tests, specifically for config_access and 
+cleaning up the report for the final submission.
+  
+Section 2:
+This week I have written the tests for the config_access file as well as sorted out some issues with git_access tests.
+I also constructed a second user study which involved creating new instructions as well as creating a google form that 
+survey takers would be able to fill out after they complete the instructions. Sadly everyone in the Animation lab was too busy
+to take the longer study so we will have to rely on the smaller studies.
+  
+Section 3:
+Run the final user study and include the results in the report. Make any changes to the final submission of the report 
+if appropriate.
