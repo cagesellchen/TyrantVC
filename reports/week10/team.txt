@@ -1,0 +1,21 @@
+Week 9 Team Report - TyrantVC
+  
+1. What we planned to do last week:
+- We will continue to work on implementation:
+- Displaying scripts from previous commits, add settings/help
+- Commits tab, highlight modified files in file view, clicking file to view commit history
+- Conduct more user tests
+
+2. What we did last week:
+- Ben refactored main_panel, cleaned up and added comments for repo review, worked on feedback for proj 7 and team report
+- Carson built commits tab
+- Annie built file display popup
+- Vlad worked on user tests
+
+3. Next week:
+- Incorporate any feedback from meeting, repo review... otherwise done?
+
+4.  Meeting agenda:
+- Go over team report- what we've worked on 
+- What to work on going forward (if anything?)
+- Discuss what focus on in final presentation
