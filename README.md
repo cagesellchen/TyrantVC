@@ -10,6 +10,10 @@ TyrantVC is a version control plugin for Maya which provides users with access t
 * Maya 2017 or newer
 * Git
 
+## Installing Maya
+1. Go to https://www.autodesk.com/education/free-software/maya
+2. If you have a student email, click "create account", create a student account, and you should be able to download Maya for free.
+
 ## Installing TyrantVC
 **MacOSX:**
 1. Open [install_plugin.py](https://raw.githubusercontent.com/cagesellchen/TyrantVC/master/install_plugin.py)
